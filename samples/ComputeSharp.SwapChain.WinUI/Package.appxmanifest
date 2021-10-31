@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="12d5350f-8f38-4076-b3cd-e5133e57de51"
+    Name="0500384f-0d39-4588-96ba-14ccff63085b"
     Publisher="CN=Sergio"
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>ComputeSharp.SwapChain.WinUI (Package)</DisplayName>
+    <DisplayName>ComputeSharp.SwapChain.WinUI</DisplayName>
     <PublisherDisplayName>Sergio</PublisherDisplayName>
-    <Logo>Images\StoreLogo.png</Logo>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -31,13 +31,13 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="ComputeSharp.SwapChain.WinUI (Package)"
-        Description="ComputeSharp.SwapChain.WinUI (Package)"
+        DisplayName="ComputeSharp.SwapChain.WinUI"
+        Description="ComputeSharp.SwapChain.WinUI"
         BackgroundColor="transparent"
-        Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Images\SplashScreen.png" />
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
