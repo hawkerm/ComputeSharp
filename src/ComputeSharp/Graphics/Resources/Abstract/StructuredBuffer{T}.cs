@@ -2,7 +2,6 @@
 using ComputeSharp.Graphics.Extensions;
 using ComputeSharp.Graphics.Helpers;
 using ComputeSharp.Graphics.Resources.Interop;
-using ComputeSharp.Interop;
 using Microsoft.Toolkit.Diagnostics;
 using TerraFX.Interop;
 using static TerraFX.Interop.D3D12_COMMAND_LIST_TYPE;
@@ -59,7 +58,7 @@ public abstract class StructuredBuffer<T> : Buffer<T>
                 byteOffset = (nint)offset * sizeof(T),
                 byteLength = length * sizeof(T);
 
-            using UniquePtr<D3D12MA_Allocation> allocation = GraphicsDevice.Allocator->CreateResource(null, ResourceType.ReadBack, AllocationMode.Default, (ulong)byteLength);
+            using ComPtr<D3D12MA_Allocation> allocation = GraphicsDevice.Allocator->CreateResource(null, ResourceType.ReadBack, AllocationMode.Default, (ulong)byteLength);
 
             using (CommandList copyCommandList = new(GraphicsDevice, D3D12_COMMAND_LIST_TYPE_COPY))
             {
@@ -157,7 +156,7 @@ public abstract class StructuredBuffer<T> : Buffer<T>
                 byteOffset = (nint)offset * sizeof(T),
                 byteLength = length * sizeof(T);
 
-            using UniquePtr<D3D12MA_Allocation> allocation = GraphicsDevice.Allocator->CreateResource(null, ResourceType.Upload, AllocationMode.Default, (ulong)byteLength);
+            using ComPtr<D3D12MA_Allocation> allocation = GraphicsDevice.Allocator->CreateResource(null, ResourceType.Upload, AllocationMode.Default, (ulong)byteLength);
 
             using (ID3D12ResourceMap resource = allocation.Get()->GetResource()->Map())
             fixed (void* sourcePointer = &source)
