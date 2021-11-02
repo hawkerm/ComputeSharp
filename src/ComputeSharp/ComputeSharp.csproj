@@ -9,7 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.1.1" />
-    <PackageReference Include="TerraFX.Interop.D3D12MemoryAllocator" Version="2.0.0-beta3.1413125470" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TerraFX.Interop.d3d12memoryallocator\TerraFX.Interop.d3d12memoryallocator.csproj" />
+    <ProjectReference Include="..\TerraFX.Interop.Windows\TerraFX.Interop.Windows.csproj" />
   </ItemGroup>
 
   <ItemGroup>
