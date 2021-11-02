@@ -19,6 +19,7 @@ internal sealed unsafe partial class ShaderCompiler
         string nugetNativeLibsPath = Path.Combine(AppContext.BaseDirectory, @"runtimes\win-x64\native");
         bool isNuGetRuntimeLibrariesDirectoryPresent = Directory.Exists(nugetNativeLibsPath);
 
+#if false
         // Register a custom library resolver for the two DXC libraries. We need to either manually load the two
         // libraries from the NuGet directory, if an RID is not in use, or we need to ensure that dxil.dll is
         // loaded correctly in case the program was executed with the host being in another directory.
@@ -57,5 +58,6 @@ internal sealed unsafe partial class ShaderCompiler
 
             return IntPtr.Zero;
         };
+#endif
     }
 }

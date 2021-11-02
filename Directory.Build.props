@@ -6,5 +6,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Company>Sergio Pedri</Company>
     <Copyright>Copyright (c) 2021 Sergio Pedri</Copyright>
+    <RestoreSources>
+      https://api.nuget.org/v3/index.json;
+      https://pkgs.terrafx.dev/index.json;
+    </RestoreSources>
   </PropertyGroup>
 </Project>
