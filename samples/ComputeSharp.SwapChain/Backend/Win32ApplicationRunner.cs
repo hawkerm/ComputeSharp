@@ -51,7 +51,7 @@ internal unsafe static class Win32ApplicationRunner
     {
         Win32ApplicationRunner.application = application;
 
-        IntPtr hInstance = Windows.GetModuleHandleW(null);
+        HMODULE hInstance = Windows.GetModuleHandleW(null);
 
         fixed (char* name = Assembly.GetExecutingAssembly().FullName)
         fixed (char* windowTitle = application.GetType().ToString())
@@ -61,9 +61,9 @@ internal unsafe static class Win32ApplicationRunner
             {
                 cbSize = (uint)sizeof(WNDCLASSEXW),
                 style = Windows.CS_HREDRAW | Windows.CS_VREDRAW,
-                lpfnWndProc = &WindowProc,
+                lpfnWndProc = (delegate* unmanaged<HWND, uint, WPARAM, LPARAM, LRESULT>)(delegate* unmanaged<IntPtr, uint, nuint, nint, nint>)&WindowProc,
                 hInstance = hInstance,
-                hCursor = Windows.LoadCursorW(IntPtr.Zero, Windows.MAKEINTRESOURCE(32512)),
+                hCursor = Windows.LoadCursorW(HINSTANCE.NULL, Windows.MAKEINTRESOURCE(32512)),
                 lpszClassName = (ushort*)name
             };
 
@@ -195,7 +195,7 @@ internal unsafe static class Win32ApplicationRunner
 
                     if (isPaused)
                     {
-                        Windows.SetCapture(hwnd);
+                        Windows.SetCapture((HWND)hwnd);
                     }
                     else
                     {
@@ -249,7 +249,7 @@ internal unsafe static class Win32ApplicationRunner
                 RECT rect;
 
                 _ = Windows.GetCursorPos(&point);
-                _ = Windows.GetWindowRect(hwnd, &rect);
+                _ = Windows.GetWindowRect((HWND)hwnd, &rect);
 
                 bool
                     isAtTop = Math.Abs(point.y - rect.top) < 12,
@@ -297,7 +297,7 @@ internal unsafe static class Win32ApplicationRunner
                 margins.cyTopHeight = -1;
                 margins.cyBottomHeight = -1;
 
-                _ = Windows.DwmExtendFrameIntoClientArea(hwnd, &margins);
+                _ = Windows.DwmExtendFrameIntoClientArea((HWND)hwnd, &margins);
 
                 return 0;
             }
@@ -310,6 +310,6 @@ internal unsafe static class Win32ApplicationRunner
             }
         }
 
-        return Windows.DefWindowProcW(hwnd, uMsg, wParam, lParam);
+        return Windows.DefWindowProcW((HWND)hwnd, uMsg, wParam, lParam);
     }
 }
