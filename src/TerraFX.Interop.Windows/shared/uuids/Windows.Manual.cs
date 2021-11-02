@@ -6,6 +6,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
@@ -76,7 +77,7 @@ namespace TerraFX.Interop
             /// <returns>A pointer to memory holding the <see cref="Guid"/> value for the current type.</returns>
             private static Guid* CreateRIID()
             {
-                Guid* p = (Guid*)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(T), sizeof(Guid));
+                Guid* p = (Guid*)Marshal.AllocHGlobal(sizeof(Guid));
 
                 *p = typeof(T).GUID;
 

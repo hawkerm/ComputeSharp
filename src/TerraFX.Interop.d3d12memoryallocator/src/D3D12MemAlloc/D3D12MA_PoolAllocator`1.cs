@@ -127,7 +127,7 @@ namespace TerraFX.Interop
         internal struct Item
         {
             // UINT32_MAX means end of list.
-            public ref uint NextFreeIndex => ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Unsafe.As<T, uint>(ref Value), 1));
+            public ref uint NextFreeIndex => ref *(uint*)Unsafe.AsPointer(ref Unsafe.As<T, uint>(ref Value));
 
             public T Value;
         }

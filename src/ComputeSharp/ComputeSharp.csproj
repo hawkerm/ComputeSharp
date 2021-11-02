@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <OutputPath>bin\Release</OutputPath>
     <DocumentationFile>ComputeSharp.xml</DocumentationFile>
     <Description>ComputeSharp</Description>
@@ -11,7 +11,13 @@
     <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
+    <!-- .NET 6 uses the NuGet packages for TerraFX -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="TerraFX.Interop.D3D12MemoryAllocator" Version="2.0.0-beta3.1413125470" />
+  </ItemGroup>
+
+  <!-- .NET Standard 2.0 uses a local fork -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <ProjectReference Include="..\TerraFX.Interop.d3d12memoryallocator\TerraFX.Interop.d3d12memoryallocator.csproj" />
     <ProjectReference Include="..\TerraFX.Interop.Windows\TerraFX.Interop.Windows.csproj" />
   </ItemGroup>

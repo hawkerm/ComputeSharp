@@ -2,6 +2,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
@@ -171,7 +172,7 @@ namespace TerraFX.Interop
         {
             if (D3D12MA_DEBUG_GLOBAL_MUTEX != 0)
             {
-                D3D12MA_MUTEX* pMutex = (D3D12MA_MUTEX*)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(D3D12MemAlloc), sizeof(D3D12MA_MUTEX));
+                D3D12MA_MUTEX* pMutex = (D3D12MA_MUTEX*)Marshal.AllocHGlobal(sizeof(D3D12MA_MUTEX));
                 D3D12MA_MUTEX._ctor(ref *pMutex);
                 return pMutex;
             }

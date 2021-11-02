@@ -4,7 +4,6 @@
 // Original source is Copyright © Advanced Micro Devices, Inc. All rights reserved. Licensed under the MIT License (MIT).
 
 using System;
-using System.Runtime.CompilerServices;
 using static TerraFX.Interop.Windows;
 using static TerraFX.Interop.D3D12MemAlloc;
 using System.Runtime.InteropServices;
@@ -25,12 +24,12 @@ namespace TerraFX.Interop
 
         private static void** InitVtbl()
         {
-            void** lpVtbl = (void**)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(D3D12MA_VirtualBlock), sizeof(void*) * 4);
+            void** lpVtbl = (void**)Marshal.AllocHGlobal(sizeof(void*) * 4);
 
-            /* QueryInterface */ lpVtbl[0] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, Guid*, void**, int>)&D3D12MA_IUnknownImpl.QueryInterface;
-            /* AddRef         */ lpVtbl[1] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, uint>)&D3D12MA_IUnknownImpl.AddRef;
-            /* Release        */ lpVtbl[2] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, uint>)&D3D12MA_IUnknownImpl.Release;
-            /* ReleaseThis    */ lpVtbl[3] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, void>)&ReleaseThis;
+            /* QueryInterface */ lpVtbl[0] = (void*)Marshal.GetFunctionPointerForDelegate(D3D12MA_IUnknownImpl.QueryInterfaceWrapper);
+            /* AddRef         */ lpVtbl[1] = (void*)Marshal.GetFunctionPointerForDelegate(D3D12MA_IUnknownImpl.AddRefWrapper);
+            /* Release        */ lpVtbl[2] = (void*)Marshal.GetFunctionPointerForDelegate(D3D12MA_IUnknownImpl.ReleaseWrapper);
+            /* ReleaseThis    */ lpVtbl[3] = (void*)Marshal.GetFunctionPointerForDelegate(ReleaseThisWrapper);
 
             return lpVtbl;
         }
@@ -56,7 +55,8 @@ namespace TerraFX.Interop
             D3D12MA_DELETE(&allocationCallbacksCopy, ref this);
         }
 
-        [UnmanagedCallersOnly]
+        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
+
         private static void ReleaseThis(D3D12MA_IUnknownImpl* pThis)
         {
             D3D12MA_ASSERT((D3D12MA_DEBUG_LEVEL > 0) && (pThis->lpVtbl == Vtbl));

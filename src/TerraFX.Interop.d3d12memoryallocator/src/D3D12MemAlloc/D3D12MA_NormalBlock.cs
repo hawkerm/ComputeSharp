@@ -7,6 +7,7 @@ using System;
 using static TerraFX.Interop.Windows;
 using static TerraFX.Interop.D3D12MemAlloc;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
@@ -17,7 +18,7 @@ namespace TerraFX.Interop
 
         private static void** InitVtbl()
         {
-            void** lpVtbl = (void**)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(D3D12MA_NormalBlock), sizeof(void*));
+            void** lpVtbl = (void**)Marshal.AllocHGlobal(sizeof(void*));
             lpVtbl[0] = (delegate*<ref D3D12MA_NormalBlock, void>)&Dispose;
             return lpVtbl;
         }

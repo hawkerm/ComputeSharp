@@ -180,7 +180,7 @@ namespace TerraFX.Interop
                     heapFlags, // heapFlags
                     m_PreferredBlockSize,
                     0, // minBlockCount
-                    nuint.MaxValue, // maxBlockCount
+                    unchecked((nuint)ulong.MaxValue), // maxBlockCount
                     false, // explicitBlockSize
                     D3D12MA_DEBUG_ALIGNMENT // minAllocationAlignment
                 );
@@ -1694,7 +1694,7 @@ namespace TerraFX.Interop
             {
                 D3D12MA_ASSERT((D3D12MA_DEBUG_LEVEL > 0) && ((sizeof(_D3D12MA_HEAP_TYPE_COUNT_e__FixedBuffer<T>) / sizeof(T)) == (int)D3D12MA_HEAP_TYPE_COUNT) && ((sizeof(_D3D12MA_HEAP_TYPE_COUNT_e__FixedBuffer<T>) % sizeof(T)) == 0));
 
-                return MemoryMarshal.CreateSpan(ref e0, (int)D3D12MA_HEAP_TYPE_COUNT);
+                return new Span<T>(Unsafe.AsPointer(ref e0), (int)D3D12MA_HEAP_TYPE_COUNT);
             }
         }
 
@@ -1718,7 +1718,7 @@ namespace TerraFX.Interop
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public Span<T> AsSpan() => MemoryMarshal.CreateSpan(ref e0, (int)D3D12MA_STANDARD_HEAP_TYPE_COUNT);
+            public Span<T> AsSpan() => new Span<T>(Unsafe.AsPointer(ref e0), (int)D3D12MA_STANDARD_HEAP_TYPE_COUNT);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1751,7 +1751,7 @@ namespace TerraFX.Interop
             {
                 D3D12MA_ASSERT((D3D12MA_DEBUG_LEVEL > 0) && ((sizeof(_D3D12MA_DEFAULT_POOL_MAX_COUNT_e__FixedBuffer<T>) / sizeof(T)) == (int)D3D12MA_DEFAULT_POOL_MAX_COUNT) && ((sizeof(_D3D12MA_DEFAULT_POOL_MAX_COUNT_e__FixedBuffer<T>) % sizeof(T)) == 0));
 
-                return MemoryMarshal.CreateSpan(ref e0, (int)D3D12MA_DEFAULT_POOL_MAX_COUNT);
+                return new Span<T>(Unsafe.AsPointer(ref e0), (int)D3D12MA_DEFAULT_POOL_MAX_COUNT);
             }
         }
     }
