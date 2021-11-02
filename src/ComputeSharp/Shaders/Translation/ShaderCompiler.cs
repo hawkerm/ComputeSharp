@@ -121,7 +121,7 @@ internal sealed unsafe partial class ShaderCompiler
                 dxcOperationResult.GetAddressOf()).Assert();
         }
 
-        int status;
+        HRESULT status;
 
         dxcOperationResult.Get()->GetStatus(&status).Assert();
 
