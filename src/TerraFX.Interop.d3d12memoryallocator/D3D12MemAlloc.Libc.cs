@@ -7,15 +7,11 @@ namespace TerraFX.Interop
 {
     public static unsafe partial class D3D12MemAlloc
     {
-        private static void* _aligned_malloc([NativeTypeName("size_t")] nuint _Size, [NativeTypeName("size_t")] nuint _Alignment)
-        {
-            return NativeMemory.AlignedAlloc(_Size, _Alignment);
-        }
+        [DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        private static extern void* _aligned_malloc([NativeTypeName("size_t")] nuint _Size, [NativeTypeName("size_t")] nuint _Alignment);
 
-        private static void _aligned_free(void* _Block)
-        {
-            NativeMemory.AlignedFree(_Block);
-        }
+        [DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        private static extern void _aligned_free(void* _Block);
 
         private static void* memset(void* _Dst, int _Val, [NativeTypeName("size_t")] nuint _Size)
         {
@@ -29,10 +25,9 @@ namespace TerraFX.Interop
             return _Dst;
         }
 
-        internal static nuint wcslen([NativeTypeName("wchar_t const*")] ushort* @_String)
-        {
-            return (uint)MemoryMarshal.CreateReadOnlySpanFromNullTerminated((char*)@_String).Length;
-        }
+        [DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: NativeTypeName("size_t")]
+        internal static extern nuint wcslen([NativeTypeName("wchar_t const*")] ushort* _String);
 
         [DllImport("libc", CallingConvention = CallingConvention.Cdecl, EntryPoint = "?get_new_handler@std@@YAP6AXXZXZ", ExactSpelling = true)]
         [return: NativeTypeName("std::new_handler")]

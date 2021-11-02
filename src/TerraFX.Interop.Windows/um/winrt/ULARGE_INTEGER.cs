@@ -23,24 +23,6 @@ namespace TerraFX.Interop
         [NativeTypeName("ULONGLONG")]
         public ulong QuadPart;
 
-        public ref uint LowPart
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous.LowPart, 1));
-            }
-        }
-
-        public ref uint HighPart
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous.HighPart, 1));
-            }
-        }
-
         public partial struct _Anonymous_e__Struct
         {
             [NativeTypeName("DWORD")]

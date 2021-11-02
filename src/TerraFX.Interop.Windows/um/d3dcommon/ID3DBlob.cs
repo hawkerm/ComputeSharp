@@ -20,7 +20,7 @@ namespace TerraFX.Interop
         [VtblIndex(0)]
         public HRESULT QueryInterface([NativeTypeName("const IID &")] Guid* riid, void** ppvObject)
         {
-            return ((delegate* unmanaged<ID3DBlob*, Guid*, void**, int>)(lpVtbl[0]))((ID3DBlob*)Unsafe.AsPointer(ref this), riid, ppvObject);
+            return ((delegate* unmanaged[Stdcall]<ID3DBlob*, Guid*, void**, int>)(lpVtbl[0]))((ID3DBlob*)Unsafe.AsPointer(ref this), riid, ppvObject);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -28,7 +28,7 @@ namespace TerraFX.Interop
         [return: NativeTypeName("ULONG")]
         public uint AddRef()
         {
-            return ((delegate* unmanaged<ID3DBlob*, uint>)(lpVtbl[1]))((ID3DBlob*)Unsafe.AsPointer(ref this));
+            return ((delegate* unmanaged[Stdcall]<ID3DBlob*, uint>)(lpVtbl[1]))((ID3DBlob*)Unsafe.AsPointer(ref this));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -36,7 +36,7 @@ namespace TerraFX.Interop
         [return: NativeTypeName("ULONG")]
         public uint Release()
         {
-            return ((delegate* unmanaged<ID3DBlob*, uint>)(lpVtbl[2]))((ID3DBlob*)Unsafe.AsPointer(ref this));
+            return ((delegate* unmanaged[Stdcall]<ID3DBlob*, uint>)(lpVtbl[2]))((ID3DBlob*)Unsafe.AsPointer(ref this));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,7 +44,7 @@ namespace TerraFX.Interop
         [return: NativeTypeName("LPVOID")]
         public void* GetBufferPointer()
         {
-            return ((delegate* unmanaged<ID3DBlob*, void*>)(lpVtbl[3]))((ID3DBlob*)Unsafe.AsPointer(ref this));
+            return ((delegate* unmanaged[Stdcall]<ID3DBlob*, void*>)(lpVtbl[3]))((ID3DBlob*)Unsafe.AsPointer(ref this));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,7 +52,7 @@ namespace TerraFX.Interop
         [return: NativeTypeName("SIZE_T")]
         public nuint GetBufferSize()
         {
-            return ((delegate* unmanaged<ID3DBlob*, nuint>)(lpVtbl[4]))((ID3DBlob*)Unsafe.AsPointer(ref this));
+            return ((delegate* unmanaged[Stdcall]<ID3DBlob*, nuint>)(lpVtbl[4]))((ID3DBlob*)Unsafe.AsPointer(ref this));
         }
     }
 }

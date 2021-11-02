@@ -28,12 +28,12 @@ namespace TerraFX.Interop
 
         private static void** InitVtbl()
         {
-            void** lpVtbl = (void**)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(D3D12MA_Allocation), sizeof(void*) * 4);
+            void** lpVtbl = (void**)Marshal.AllocHGlobal(sizeof(void*) * 4);
 
-            /* QueryInterface */ lpVtbl[0] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, Guid*, void**, int>)&D3D12MA_IUnknownImpl.QueryInterface;
-            /* AddRef         */ lpVtbl[1] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, uint>)&D3D12MA_IUnknownImpl.AddRef;
-            /* Release        */ lpVtbl[2] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, uint>)&D3D12MA_IUnknownImpl.Release;
-            /* ReleaseThis    */ lpVtbl[3] = (delegate* unmanaged<D3D12MA_IUnknownImpl*, void>)&ReleaseThis;
+            /* QueryInterface */ lpVtbl[0] = (void*)Marshal.GetFunctionPointerForDelegate(D3D12MA_IUnknownImpl.QueryInterfaceWrapper);
+            /* AddRef         */ lpVtbl[1] = (void*)Marshal.GetFunctionPointerForDelegate(D3D12MA_IUnknownImpl.AddRefWrapper);
+            /* Release        */ lpVtbl[2] = (void*)Marshal.GetFunctionPointerForDelegate(D3D12MA_IUnknownImpl.ReleaseWrapper);
+            /* ReleaseThis    */ lpVtbl[3] = (void*)Marshal.GetFunctionPointerForDelegate(ReleaseThisWrapper);
 
             // Note: ReleaseThis is intentionally a managed function pointer as this method is internal, and only used
             // by the default implementation of Release. Since there is no public interface exposing this API, it wouldn't
@@ -111,7 +111,8 @@ namespace TerraFX.Interop
             m_Allocator->GetAllocationObjectAllocator()->Free(ref this);
         }
 
-        [UnmanagedCallersOnly]
+        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
+
         private static void ReleaseThis(D3D12MA_IUnknownImpl* pThis)
         {
             D3D12MA_ASSERT((D3D12MA_DEBUG_LEVEL > 0) && (pThis->lpVtbl == Vtbl));
@@ -258,19 +259,19 @@ namespace TerraFX.Interop
         internal readonly ref _m_Committed_e__Struct m_Committed
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Unsafe.AsRef(m_Union.m_Committed), 1));
+            get => ref *(_m_Committed_e__Struct*)Unsafe.AsPointer(ref Unsafe.AsRef(m_Union.m_Committed));
         }
 
         internal readonly ref _m_Placed_e__Struct m_Placed
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Unsafe.AsRef(m_Union.m_Placed), 1));
+            get => ref *(_m_Placed_e__Struct*)Unsafe.AsPointer(ref Unsafe.AsRef(m_Union.m_Placed));
         }
 
         internal readonly ref _m_Heap_e__Struct m_Heap
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Unsafe.AsRef(m_Union.m_Heap), 1));
+            get => ref *(_m_Heap_e__Struct*)Unsafe.AsPointer(ref Unsafe.AsRef(m_Union.m_Heap));
         }
 
         [StructLayout(LayoutKind.Explicit)]

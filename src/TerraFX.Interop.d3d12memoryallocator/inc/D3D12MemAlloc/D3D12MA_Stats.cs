@@ -40,7 +40,7 @@ namespace TerraFX.Interop
             {
                 D3D12MA_ASSERT((D3D12MA_DEBUG_LEVEL > 0) && ((sizeof(__Stats_e__FixedBuffer) / sizeof(D3D12MA_StatInfo)) == D3D12MA_HEAP_TYPE_COUNT) && ((sizeof(__Stats_e__FixedBuffer) % sizeof(D3D12MA_StatInfo)) == 0));
 
-                return MemoryMarshal.CreateSpan(ref e0, (int)D3D12MA_HEAP_TYPE_COUNT);
+                return new Span<D3D12MA_StatInfo>(Unsafe.AsPointer(ref e0), (int)D3D12MA_HEAP_TYPE_COUNT);
             }
         }
     }

@@ -4,7 +4,7 @@
 // Original source is Copyright © Advanced Micro Devices, Inc. All rights reserved. Licensed under the MIT License (MIT).
 
 using System;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using static TerraFX.Interop.D3D12MemAlloc;
 
 namespace TerraFX.Interop
@@ -16,7 +16,7 @@ namespace TerraFX.Interop
 
         private static void** InitVtbl()
         {
-            void** lpVtbl = (void**)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(D3D12MA_BlockMetadata), sizeof(void*) * 15);
+            void** lpVtbl = (void**)Marshal.AllocHGlobal(sizeof(void*) * 15);
 
             /* Finalizer                 */ lpVtbl[0] = (delegate*<ref D3D12MA_BlockMetadata, void>)&Dispose;
             /* Init                      */ lpVtbl[1] = (delegate*<ref D3D12MA_BlockMetadata, ulong, void>)&Init;

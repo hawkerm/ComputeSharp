@@ -3,7 +3,6 @@
 // Ported from d3dx12.h in DirectX-Graphics-Samples commit a7a87f1853b5540f10920518021d91ae641033fb
 // Original source is Copyright © Microsoft. All rights reserved. Licensed under the MIT License (MIT).
 
-using System;
 using static TerraFX.Interop.D3D12_RESOURCE_DIMENSION;
 using static TerraFX.Interop.D3D12_RESOURCE_FLAGS;
 using static TerraFX.Interop.D3D12_TEXTURE_LAYOUT;
@@ -11,7 +10,7 @@ using static TerraFX.Interop.DXGI_FORMAT;
 
 namespace TerraFX.Interop
 {
-    public unsafe partial struct D3D12_RESOURCE_DESC : IEquatable<D3D12_RESOURCE_DESC>
+    public unsafe partial struct D3D12_RESOURCE_DESC
     {
         public D3D12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION dimension, [NativeTypeName("UINT64")] ulong alignment, [NativeTypeName("UINT64")] ulong width, uint height, [NativeTypeName("UINT16")] ushort depthOrArraySize, [NativeTypeName("UINT16")] ushort mipLevels, DXGI_FORMAT format, uint sampleCount, uint sampleQuality, D3D12_TEXTURE_LAYOUT layout, D3D12_RESOURCE_FLAGS flags)
         {
@@ -67,38 +66,6 @@ namespace TerraFX.Interop
             {
                 return (Dimension != D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : (ushort)1);
             }
-        }
-
-        public static bool operator ==([NativeTypeName("const D3D12_RESOURCE_DESC &")] in D3D12_RESOURCE_DESC l, [NativeTypeName("const D3D12_RESOURCE_DESC &")] in D3D12_RESOURCE_DESC r)
-        {
-            return l.Dimension == r.Dimension && l.Alignment == r.Alignment && l.Width == r.Width && l.Height == r.Height && l.DepthOrArraySize == r.DepthOrArraySize && l.MipLevels == r.MipLevels && l.Format == r.Format && l.SampleDesc.Count == r.SampleDesc.Count && l.SampleDesc.Quality == r.SampleDesc.Quality && l.Layout == r.Layout && l.Flags == r.Flags;
-        }
-
-        public static bool operator !=([NativeTypeName("const D3D12_RESOURCE_DESC &")] in D3D12_RESOURCE_DESC l, [NativeTypeName("const D3D12_RESOURCE_DESC &")] in D3D12_RESOURCE_DESC r)
-        {
-            return !(l == r);
-        }
-
-        public override bool Equals(object? obj) => (obj is D3D12_RESOURCE_DESC other) && Equals(other);
-
-        public bool Equals(D3D12_RESOURCE_DESC other) => this == other;
-
-        public override int GetHashCode()
-        {
-            var hashCode = new HashCode();
-            {
-                hashCode.Add(Dimension);
-                hashCode.Add(Alignment);
-                hashCode.Add(Width);
-                hashCode.Add(Height);
-                hashCode.Add(DepthOrArraySize);
-                hashCode.Add(MipLevels);
-                hashCode.Add(Format);
-                hashCode.Add(SampleDesc);
-                hashCode.Add(Layout);
-                hashCode.Add(Flags);
-            }
-            return hashCode.ToHashCode();
         }
     }
 }
