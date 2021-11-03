@@ -54,15 +54,20 @@ void GenerateVectorProperties(string typeName, int elementSize)
 
     if (elementTypeName != "Bool")
     {
+        WriteLine("#if NET6_0_OR_GREATER");
         WriteLine("using System;");
         WriteLine("using System.Globalization;");
+        WriteLine("#endif");
     }
 #>
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-#if !NET6_0
+#if SOURCE_GENERATOR
 using RuntimeHelpers = ComputeSharp.SourceGenerators.Helpers.RuntimeHelpers;
 using MemoryMarshal = ComputeSharp.SourceGenerators.Helpers.MemoryMarshal;
+#elif !NET6_0_OR_GREATER
+using RuntimeHelpers = ComputeSharp.Polyfills.System.Runtime.CompilerServices.RuntimeHelpers;
+using MemoryMarshal = ComputeSharp.Polyfills.System.Runtime.InteropServices.MemoryMarshal;
 #endif
 
 #nullable enable
@@ -76,7 +81,7 @@ public unsafe partial struct <#=typeName#>
     if (formattable != "")
     {
 #>
-#if !SOURCE_GENERATOR
+#if NET6_0_OR_GREATER
     : <#=formattable#>
 #endif
 <#
@@ -157,7 +162,7 @@ public unsafe partial struct <#=typeName#>
     WriteLine("");
 
 #>
-#if !SOURCE_GENERATOR
+#if NET6_0_OR_GREATER
 
 <#
 

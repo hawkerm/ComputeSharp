@@ -1,8 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-#if !NET6_0
+#if SOURCE_GENERATOR
 using RuntimeHelpers = ComputeSharp.SourceGenerators.Helpers.RuntimeHelpers;
 using MemoryMarshal = ComputeSharp.SourceGenerators.Helpers.MemoryMarshal;
+#elif !NET6_0_OR_GREATER
+using RuntimeHelpers = ComputeSharp.Polyfills.System.Runtime.CompilerServices.RuntimeHelpers;
+using MemoryMarshal = ComputeSharp.Polyfills.System.Runtime.InteropServices.MemoryMarshal;
 #endif
 
 #nullable enable
@@ -387,7 +390,7 @@ public unsafe partial struct Bool2
     /// <remarks>This method is an intrinsic and can only be used within a shader on the GPU. Using it on the CPU is undefined behavior.</remarks>
     public readonly ref readonly Bool4 GGGG => ref *(Bool4*)UndefinedData;
 
-#if !SOURCE_GENERATOR
+#if NET6_0_OR_GREATER
 
     /// <inheritdoc/>
     public override readonly string ToString()

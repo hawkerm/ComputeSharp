@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using TerraFX.Interop;
 using static TerraFX.Interop.D3D12_MESSAGE_SEVERITY;
+#if !NET6_0_OR_GREATER
+using Enum = ComputeSharp.Polyfills.System.Enum;
+#endif
 
 namespace ComputeSharp.Graphics.Helpers;
 

@@ -21,6 +21,8 @@ namespace TerraFX.Interop
     /// </summary>
     public unsafe partial struct D3D12MA_Pool : IDisposable
     {
+        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
+
         private static readonly void** Vtbl = InitVtbl();
 
         private static void** InitVtbl()
@@ -57,8 +59,6 @@ namespace TerraFX.Interop
             using var debugGlobalMutexLock = D3D12MA_DEBUG_GLOBAL_MUTEX_LOCK();
             D3D12MA_DELETE(GetAllocator()->GetAllocs(), ref this);
         }
-
-        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
 
         private static void ReleaseThis(D3D12MA_IUnknownImpl* pThis)
         {
