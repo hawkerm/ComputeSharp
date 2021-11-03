@@ -13,6 +13,7 @@
 
     <!-- .NET 6 uses the NuGet packages for TerraFX -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="TerraFX.Interop.Windows" Version="10.0.20348-rc2.1411011823" />
     <PackageReference Include="TerraFX.Interop.D3D12MemoryAllocator" Version="2.0.0-beta3.1413125470" />
   </ItemGroup>
 
