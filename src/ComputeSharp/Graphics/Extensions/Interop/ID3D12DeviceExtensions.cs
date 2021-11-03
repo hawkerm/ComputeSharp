@@ -177,8 +177,8 @@ internal static unsafe class ID3D12DeviceExtensions
         D3D12_SHADER_RESOURCE_VIEW_DESC d3D12ShaderResourceViewDescription = default;
         d3D12ShaderResourceViewDescription.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
         d3D12ShaderResourceViewDescription.Shader4ComponentMapping = Windows.D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-        d3D12ShaderResourceViewDescription.Buffer.NumElements = bufferSize;
-        d3D12ShaderResourceViewDescription.Buffer.StructureByteStride = elementSize;
+        d3D12ShaderResourceViewDescription.Anonymous.Buffer.NumElements = bufferSize;
+        d3D12ShaderResourceViewDescription.Anonymous.Buffer.StructureByteStride = elementSize;
 
         d3D12Device.CreateShaderResourceView(d3D12Resource, &d3D12ShaderResourceViewDescription, d3D12CpuDescriptorHandle);
     }
@@ -202,7 +202,7 @@ internal static unsafe class ID3D12DeviceExtensions
         d3D12ShaderResourceViewDescription.ViewDimension = d3D12SrvDimension;
         d3D12ShaderResourceViewDescription.Format = dxgiFormat;
         d3D12ShaderResourceViewDescription.Shader4ComponentMapping = Windows.D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-        d3D12ShaderResourceViewDescription.Texture2D.MipLevels = uint.MaxValue;
+        d3D12ShaderResourceViewDescription.Anonymous.Texture2D.MipLevels = uint.MaxValue;
 
         d3D12Device.CreateShaderResourceView(d3D12Resource, &d3D12ShaderResourceViewDescription, d3D12CpuDescriptorHandle);
     }
@@ -224,8 +224,8 @@ internal static unsafe class ID3D12DeviceExtensions
     {
         D3D12_UNORDERED_ACCESS_VIEW_DESC d3D12UnorderedAccessViewDescription = default;
         d3D12UnorderedAccessViewDescription.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
-        d3D12UnorderedAccessViewDescription.Buffer.NumElements = bufferSize;
-        d3D12UnorderedAccessViewDescription.Buffer.StructureByteStride = elementSize;
+        d3D12UnorderedAccessViewDescription.Anonymous.Buffer.NumElements = bufferSize;
+        d3D12UnorderedAccessViewDescription.Anonymous.Buffer.StructureByteStride = elementSize;
 
         d3D12Device.CreateUnorderedAccessView(d3D12Resource, null, &d3D12UnorderedAccessViewDescription, d3D12CpuDescriptorHandle);
     }
@@ -248,7 +248,7 @@ internal static unsafe class ID3D12DeviceExtensions
         D3D12_UNORDERED_ACCESS_VIEW_DESC d3D12UnorderedAccessViewDescription = default;
         d3D12UnorderedAccessViewDescription.ViewDimension = d3D12UavDimension;
         d3D12UnorderedAccessViewDescription.Format = dxgiFormat;
-        d3D12UnorderedAccessViewDescription.Texture3D.WSize = uint.MaxValue;
+        d3D12UnorderedAccessViewDescription.Anonymous.Texture3D.WSize = uint.MaxValue;
 
         d3D12Device.CreateUnorderedAccessView(d3D12Resource, null, &d3D12UnorderedAccessViewDescription, d3D12CpuDescriptorHandle);
     }

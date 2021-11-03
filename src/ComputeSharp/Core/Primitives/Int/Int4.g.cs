@@ -1,10 +1,15 @@
-﻿using System;
+﻿#if NET6_0_OR_GREATER
+using System;
 using System.Globalization;
+#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-#if !NET6_0
+#if SOURCE_GENERATOR
 using RuntimeHelpers = ComputeSharp.SourceGenerators.Helpers.RuntimeHelpers;
 using MemoryMarshal = ComputeSharp.SourceGenerators.Helpers.MemoryMarshal;
+#elif !NET6_0_OR_GREATER
+using RuntimeHelpers = ComputeSharp.Polyfills.System.Runtime.CompilerServices.RuntimeHelpers;
+using MemoryMarshal = ComputeSharp.Polyfills.System.Runtime.InteropServices.MemoryMarshal;
 #endif
 
 #nullable enable
@@ -14,7 +19,7 @@ namespace ComputeSharp;
 /// <inheritdoc cref="Int4"/>
 [StructLayout(LayoutKind.Explicit, Size = 16, Pack = 4)]
 public unsafe partial struct Int4
-#if !SOURCE_GENERATOR
+#if NET6_0_OR_GREATER
     : ISpanFormattable
 #endif
 {
@@ -4114,7 +4119,7 @@ public unsafe partial struct Int4
     /// <remarks>This method is an intrinsic and can only be used within a shader on the GPU. Using it on the CPU is undefined behavior.</remarks>
     public readonly ref readonly Int4 AAAA => ref *(Int4*)UndefinedData;
 
-#if !SOURCE_GENERATOR
+#if NET6_0_OR_GREATER
 
     /// <inheritdoc/>
     public override readonly string ToString()

@@ -20,6 +20,8 @@ namespace TerraFX.Interop
     /// </summary>
     public unsafe partial struct D3D12MA_VirtualBlock : IDisposable
     {
+        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
+
         private static readonly void** Vtbl = InitVtbl();
 
         private static void** InitVtbl()
@@ -54,8 +56,6 @@ namespace TerraFX.Interop
             D3D12MA_ALLOCATION_CALLBACKS allocationCallbacksCopy = m_AllocationCallbacks;
             D3D12MA_DELETE(&allocationCallbacksCopy, ref this);
         }
-
-        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
 
         private static void ReleaseThis(D3D12MA_IUnknownImpl* pThis)
         {

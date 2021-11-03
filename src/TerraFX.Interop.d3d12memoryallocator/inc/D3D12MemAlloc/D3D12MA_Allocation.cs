@@ -24,6 +24,8 @@ namespace TerraFX.Interop
     /// </summary>
     public unsafe struct D3D12MA_Allocation : IDisposable, D3D12MA_IItemTypeTraits<D3D12MA_Allocation>
     {
+        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
+
         private static readonly void** Vtbl = InitVtbl();
 
         private static void** InitVtbl()
@@ -110,8 +112,6 @@ namespace TerraFX.Interop
 
             m_Allocator->GetAllocationObjectAllocator()->Free(ref this);
         }
-
-        private static readonly D3D12MA_IUnknownImpl.ReleaseThisDelegate ReleaseThisWrapper = ReleaseThis;
 
         private static void ReleaseThis(D3D12MA_IUnknownImpl* pThis)
         {

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+#if !NET6_0_OR_GREATER
+using GC = ComputeSharp.Polyfills.System.GC;
+#endif
 
 namespace ComputeSharp.Resources.Debug;
 

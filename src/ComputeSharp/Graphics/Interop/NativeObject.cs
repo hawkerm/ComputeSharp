@@ -45,7 +45,7 @@ public abstract class NativeObject : IDisposable
         // is visible to the compiler. That is, if Dispose() is explicitly called on a
         // sealed type that is not GraphicsDevice, this entire path will just be removed.
         if (GetType() == typeof(GraphicsDevice) &&
-            DeviceHelper.GetDefaultDeviceLuid() == Unsafe.As<GraphicsDevice>(this).Luid)
+            DeviceHelper.GetDefaultDeviceLuid() == Unsafe.As<GraphicsDevice>(this)!.Luid)
         {
             return;
         }

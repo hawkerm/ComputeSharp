@@ -56,6 +56,7 @@ public static class Texture2DExtensions
         texture.CopyTo(destination.AsSpan(), 0, 0, texture.Width, texture.Height);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Reads the contents of the specified range from the current <see cref="Texture2D{T}"/> instance and writes them into a target array.
     /// </summary>
@@ -69,6 +70,7 @@ public static class Texture2DExtensions
     {
         texture.CopyTo(destination.AsSpan(), x, y);
     }
+#endif
 
     /// <summary>
     /// Reads the contents of the specified range from the current <see cref="Texture2D{T}"/> instance and writes them into a target array.
@@ -99,6 +101,7 @@ public static class Texture2DExtensions
         texture.CopyTo(destination.AsSpan(offset), 0, 0, texture.Width, texture.Height);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Reads the contents of the specified range from the current <see cref="Texture2D{T}"/> instance and writes them into a target array.
     /// </summary>
@@ -113,6 +116,7 @@ public static class Texture2DExtensions
     {
         texture.CopyTo(destination.AsSpan(offset), x, y);
     }
+#endif
 
     /// <summary>
     /// Reads the contents of the specified range from the current <see cref="Texture2D{T}"/> instance and writes them into a target array.
@@ -144,6 +148,7 @@ public static class Texture2DExtensions
         texture.CopyTo(destination, 0, 0, texture.Width, texture.Height);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Reads the contents of the specified range from the current <see cref="Texture2D{T}"/> instance and writes them into a target <see cref="Span{T}"/>.
     /// </summary>
@@ -160,6 +165,7 @@ public static class Texture2DExtensions
 
         texture.CopyTo(destination, offsetX, offsetY, width, height);
     }
+#endif
 
     /// <summary>
     /// Reads the contents of the specified range from the current <see cref="Texture2D{T}"/> instance and writes them into a target <see cref="Span{T}"/>.
@@ -232,6 +238,7 @@ public static class Texture2DExtensions
         texture.CopyFrom(source.AsSpan(), 0, 0, texture.Width, texture.Height);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Writes the contents of a given <typeparamref name="T"/> array to a specified area of the current <see cref="Texture2D{T}"/> instance.
     /// </summary>
@@ -245,6 +252,7 @@ public static class Texture2DExtensions
     {
         texture.CopyFrom(source.AsSpan(), x, y);
     }
+#endif
 
     /// <summary>
     /// Writes the contents of a given <typeparamref name="T"/> array to a specified area of the current <see cref="Texture2D{T}"/> instance.
@@ -262,6 +270,7 @@ public static class Texture2DExtensions
         texture.CopyFrom(source.AsSpan(), x, y, width, height);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Writes the contents of a given <typeparamref name="T"/> array to a specified area of the current <see cref="Texture2D{T}"/> instance.
     /// </summary>
@@ -276,6 +285,7 @@ public static class Texture2DExtensions
     {
         texture.CopyFrom(source.AsSpan(offset), x, y);
     }
+#endif
 
     /// <summary>
     /// Writes the contents of a given <typeparamref name="T"/> array to a specified area of the current <see cref="Texture2D{T}"/> instance.
@@ -307,6 +317,7 @@ public static class Texture2DExtensions
         texture.CopyFrom(source, 0, 0, texture.Width, texture.Height);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Writes the contents of a given <see cref="ReadOnlySpan{T}"/> to a specified area of the current <see cref="Texture2D{T}"/> instance.
     /// </summary>
@@ -323,6 +334,7 @@ public static class Texture2DExtensions
 
         texture.CopyFrom(source, offsetX, offsetY, width, height);
     }
+#endif
 
     /// <summary>
     /// Writes the contents of a given <see cref="ReadOnlySpan{T}"/> to a specified area of the current <see cref="Texture2D{T}"/> instance.
