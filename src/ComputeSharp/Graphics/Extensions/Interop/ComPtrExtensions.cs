@@ -9,6 +9,7 @@ namespace ComputeSharp.Core.Extensions;
 /// </summary>
 internal static class ComPtrExtensions
 {
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Invokes <see cref="IUnknown.AddRef"/> on the wrapped object for an input <see cref="ComPtr{T}"/> value.
     /// </summary>
@@ -52,6 +53,7 @@ internal static class ComPtrExtensions
 
         return 0;
     }
+#endif
 
     /// <summary>
     /// Reinterprets the current <see cref="ComPtr{T}"/> instance as one of type <see cref="IUnknown"/>.

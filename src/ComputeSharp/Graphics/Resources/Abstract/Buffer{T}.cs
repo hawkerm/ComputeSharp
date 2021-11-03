@@ -19,10 +19,12 @@ namespace ComputeSharp.Resources;
 public unsafe abstract class Buffer<T> : NativeObject
     where T : unmanaged
 {
+#if NET6_0_OR_GREATER
     /// <summary>
     /// The <see cref="D3D12MA_Allocation"/> instance used to retrieve <see cref="d3D12Resource"/>.
     /// </summary>
     private ComPtr<D3D12MA_Allocation> allocation;
+#endif
 
     /// <summary>
     /// The <see cref="ID3D12Resource"/> instance currently mapped.
@@ -76,8 +78,12 @@ public unsafe abstract class Buffer<T> : NativeObject
         GraphicsDevice = device;
         Length = length;
 
+#if NET6_0_OR_GREATER
         this.allocation = device.Allocator->CreateResource(device.Pool, resourceType, allocationMode, (ulong)SizeInBytes);
         this.d3D12Resource = new ComPtr<ID3D12Resource>(this.allocation.Get()->GetResource());
+#else
+        this.d3D12Resource = device.D3D12Device->CreateCommittedResource(resourceType, allocationMode, (ulong)SizeInBytes, device.IsCacheCoherentUMA);
+#endif
 
         device.RegisterAllocatedResource();
         device.RentShaderResourceViewDescriptorHandles(out D3D12CpuDescriptorHandle, out D3D12GpuDescriptorHandle);
@@ -174,7 +180,9 @@ public unsafe abstract class Buffer<T> : NativeObject
     protected override void OnDispose()
     {
         this.d3D12Resource.Dispose();
+#if NET6_0_OR_GREATER
         this.allocation.Dispose();
+#endif
 
         if (GraphicsDevice is GraphicsDevice device)
         {

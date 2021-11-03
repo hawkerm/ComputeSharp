@@ -58,15 +58,31 @@ public abstract class StructuredBuffer<T> : Buffer<T>
                 byteOffset = (nint)offset * sizeof(T),
                 byteLength = length * sizeof(T);
 
+#if NET6_0_OR_GREATER
             using ComPtr<D3D12MA_Allocation> allocation = GraphicsDevice.Allocator->CreateResource(null, ResourceType.ReadBack, AllocationMode.Default, (ulong)byteLength);
+#else
+            using ComPtr<ID3D12Resource> d3D12Resource = GraphicsDevice.D3D12Device->CreateCommittedResource(
+                ResourceType.ReadBack,
+                AllocationMode.Default,
+                (ulong)byteLength,
+                GraphicsDevice.IsCacheCoherentUMA);
+#endif
 
             using (CommandList copyCommandList = new(GraphicsDevice, D3D12_COMMAND_LIST_TYPE_COPY))
             {
+#if NET6_0_OR_GREATER
                 copyCommandList.D3D12GraphicsCommandList->CopyBufferRegion(allocation.Get()->GetResource(), 0, D3D12Resource, (ulong)byteOffset, (ulong)byteLength);
+#else
+                copyCommandList.D3D12GraphicsCommandList->CopyBufferRegion(d3D12Resource.Get(), 0, D3D12Resource, (ulong)byteOffset, (ulong)byteLength);
+#endif
                 copyCommandList.ExecuteAndWaitForCompletion();
             }
 
+#if NET6_0_OR_GREATER
             using ID3D12ResourceMap resource = allocation.Get()->GetResource()->Map();
+#else
+            using ID3D12ResourceMap resource = d3D12Resource.Get()->Map();
+#endif
 
             fixed (void* destinationPointer = &destination)
             {
@@ -156,9 +172,21 @@ public abstract class StructuredBuffer<T> : Buffer<T>
                 byteOffset = (nint)offset * sizeof(T),
                 byteLength = length * sizeof(T);
 
+#if NET6_0_OR_GREATER
             using ComPtr<D3D12MA_Allocation> allocation = GraphicsDevice.Allocator->CreateResource(null, ResourceType.Upload, AllocationMode.Default, (ulong)byteLength);
+#else
+            using ComPtr<ID3D12Resource> d3D12Resource = GraphicsDevice.D3D12Device->CreateCommittedResource(
+                ResourceType.Upload,
+                AllocationMode.Default,
+                (ulong)byteLength,
+                GraphicsDevice.IsCacheCoherentUMA);
+#endif
 
+#if NET6_0_OR_GREATER
             using (ID3D12ResourceMap resource = allocation.Get()->GetResource()->Map())
+#else
+            using (ID3D12ResourceMap resource = d3D12Resource.Get()->Map())
+#endif
             fixed (void* sourcePointer = &source)
             {
                 MemoryHelper.Copy(
@@ -171,7 +199,11 @@ public abstract class StructuredBuffer<T> : Buffer<T>
 
             using CommandList copyCommandList = new(GraphicsDevice, D3D12_COMMAND_LIST_TYPE_COPY);
 
+#if NET6_0_OR_GREATER
             copyCommandList.D3D12GraphicsCommandList->CopyBufferRegion(D3D12Resource, (ulong)byteOffset, allocation.Get()->GetResource(), 0, (ulong)byteLength);
+#else
+            copyCommandList.D3D12GraphicsCommandList->CopyBufferRegion(D3D12Resource, (ulong)byteOffset, d3D12Resource.Get(), 0, (ulong)byteLength);
+#endif
             copyCommandList.ExecuteAndWaitForCompletion();
         }
     }
