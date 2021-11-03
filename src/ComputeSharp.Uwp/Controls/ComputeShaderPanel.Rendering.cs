@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using ComputeSharp.Core.Extensions;
 using ComputeSharp.Interop;
@@ -247,11 +248,10 @@ public sealed partial class ComputeShaderPanel
         // IDXGISwapChain reference just created and set that as the swap chain panel to use.
         using ComPtr<ISwapChainPanelNative> swapChainPanelNative = default;
 
-        IUnknown* swapChainPanel = (IUnknown*)((IWinRTObject)this).NativeObject.ThisPtr;
-        Guid iSwapChainPanelNativeUuid = new(0x63AAD0B8, 0x7C24, 0x40FF, 0x85, 0xA8, 0x64, 0x0D, 0x94, 0x4C, 0xC3, 0x25);
+        IUnknown* swapChainPanel = (IUnknown*)Marshal.GetIUnknownForObject(this);
 
         swapChainPanel->QueryInterface(
-            &iSwapChainPanelNativeUuid,
+            FX.__uuidof<ISwapChainPanelNative>(),
             (void**)&swapChainPanelNative).Assert();
 
         using ComPtr<IDXGISwapChain> idxgiSwapChain = default;
