@@ -1,6 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
-
-using System;
+﻿using System;
 
 namespace ComputeSharp.Polyfills.System.IO;
 
@@ -20,5 +18,3 @@ internal static class Path
         return global::System.IO.Path.GetExtension(path.ToString()).AsSpan();
     }
 }
-
-#endif

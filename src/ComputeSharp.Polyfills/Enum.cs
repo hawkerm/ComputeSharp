@@ -1,6 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
-
-namespace ComputeSharp.Polyfills.System;
+﻿namespace ComputeSharp.Polyfills.System;
 
 /// <summary>
 /// A polyfill type that mirrors some methods from <see cref="global::System.Enum"/> on .NET 5.
@@ -19,5 +17,3 @@ internal static class Enum
         return global::System.Enum.GetName(typeof(T), value);
     }
 }
-
-#endif

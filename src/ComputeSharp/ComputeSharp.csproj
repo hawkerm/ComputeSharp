@@ -13,7 +13,6 @@
 
     <!-- .NET 6 uses the NuGet packages for TerraFX -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="TerraFX.Interop.Windows" Version="10.0.20348-rc2.1411011823" />
     <PackageReference Include="TerraFX.Interop.D3D12MemoryAllocator" Version="2.0.0-beta3.1413125470" />
   </ItemGroup>
 
@@ -27,6 +26,11 @@
   <!-- .NET Standard 2.0 uses a local fork of TerraFX.Interop.Windows and no D3D12MA -->
   <Import Condition="'$(TargetFramework)' == 'netstandard2.0'"
           Project="..\TerraFX.Interop.Windows\TerraFX.Interop.Windows.projitems"
+          Label="Shared" />
+
+  <!-- Shared project with .NET Standard 2.0 polyfills -->
+  <Import Condition="'$(TargetFramework)' == 'netstandard2.0'"
+          Project="..\ComputeSharp.Polyfills\ComputeSharp.Polyfills.projitems"
           Label="Shared" />
 
   <ItemGroup>

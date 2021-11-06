@@ -1,6 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
-
-namespace System.Collections.Generic;
+﻿namespace System.Collections.Generic;
 
 /// <summary>
 /// A helper type with extensions for the <see cref="Dictionary{TKey, TValue}"/> type.
@@ -28,5 +26,3 @@ internal static class DictionaryExtensions
         return false;
     }
 }
-
-#endif

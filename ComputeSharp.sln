@@ -50,12 +50,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputeSharp.Sample.FSharp.
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TerraFX.Interop.Windows", "src\TerraFX.Interop.Windows\TerraFX.Interop.Windows.shproj", "{4FCD5025-D581-4223-B171-E2564D325E1C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Polyfills", "Polyfills", "{820F7B97-C1C1-4D74-9434-2731C19C7FF3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ComputeSharp.Polyfills", "src\ComputeSharp.Polyfills\ComputeSharp.Polyfills.shproj", "{C838A543-123B-4720-B0FD-B70E5DB888BE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\ComputeSharp.Polyfills\ComputeSharp.Polyfills.projitems*{314eb353-e7e3-4146-8111-685cc83ec1de}*SharedItemsImports = 5
 		src\TerraFX.Interop.Windows\TerraFX.Interop.Windows.projitems*{314eb353-e7e3-4146-8111-685cc83ec1de}*SharedItemsImports = 5
 		src\TerraFX.Interop.Windows\TerraFX.Interop.Windows.projitems*{4fcd5025-d581-4223-b171-e2564d325e1c}*SharedItemsImports = 13
 		samples\ComputeSharp.Sample.Shared\ComputeSharp.Sample.Shared.projitems*{7048deea-0a6f-46a0-b951-b682a8f1cb75}*SharedItemsImports = 5
 		samples\ComputeSharp.Sample.Shared\ComputeSharp.Sample.Shared.projitems*{8cefc324-ca6c-4845-9ad9-70b92bd87057}*SharedItemsImports = 13
+		src\ComputeSharp.Polyfills\ComputeSharp.Polyfills.projitems*{c838a543-123b-4720-b0fd-b70e5db888be}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +182,8 @@ Global
 		{E7C9247D-016B-4819-AF9F-0E9B3591E04B} = {0ED8F632-5E17-46BE-8CC3-B14A82D4AEB1}
 		{7C625EC4-F599-4350-A915-F046DF2406D3} = {0ED8F632-5E17-46BE-8CC3-B14A82D4AEB1}
 		{1F37A704-3CDF-45BB-8114-ED9137E5F2CF} = {0ED8F632-5E17-46BE-8CC3-B14A82D4AEB1}
+		{4FCD5025-D581-4223-B171-E2564D325E1C} = {820F7B97-C1C1-4D74-9434-2731C19C7FF3}
+		{C838A543-123B-4720-B0FD-B70E5DB888BE} = {820F7B97-C1C1-4D74-9434-2731C19C7FF3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4664C5E3-0340-4E22-BCFD-98AAEDF5F2DC}

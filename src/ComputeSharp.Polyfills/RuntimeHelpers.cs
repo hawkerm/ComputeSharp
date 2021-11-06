@@ -1,6 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace ComputeSharp.Polyfills.System.Runtime.CompilerServices;
@@ -18,5 +16,3 @@ internal static class RuntimeHelpers
     /// <returns>A pointer to the allocated memory.</returns>
     public static IntPtr AllocateTypeAssociatedMemory(Type type, int size) => Marshal.AllocHGlobal(size);
 }
-
-#endif

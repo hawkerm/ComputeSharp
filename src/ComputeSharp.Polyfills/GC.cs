@@ -1,6 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
-
-namespace ComputeSharp.Polyfills.System;
+﻿namespace ComputeSharp.Polyfills.System;
 
 /// <summary>
 /// A polyfill type that mirrors some methods from <see cref="global::System.GC"/> on .NET 5.
@@ -21,5 +19,3 @@ internal static class GC
         return new T[length];
     }
 }
-
-#endif

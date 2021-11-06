@@ -1,6 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
-
-using System;
+﻿using System;
 
 namespace ComputeSharp.Polyfills.System.Runtime.InteropServices;
 
@@ -24,5 +22,3 @@ internal static class MemoryMarshal
     /// <returns>A new <see cref="Span{T}"/> wrapping <paramref name="value"/>.</returns>
     public static Span<T> CreateSpan<T>(ref T value, int length) => default;
 }
-
-#endif

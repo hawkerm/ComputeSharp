@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>c838a543-123b-4720-b0fd-b70e5db888be</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ComputeSharp.Polyfills</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GC.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MemoryMarshal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)QueueExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SkipLocalsInitAttribute.cs" />
+  </ItemGroup>
+</Project>
