@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputeSharp.Sample.FSharp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TerraFX.Interop.Windows", "src\TerraFX.Interop.Windows\TerraFX.Interop.Windows.csproj", "{843C4E35-433A-4C8D-8A94-EBA3CE89594A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputeSharp.Uwp", "src\ComputeSharp.Uwp\ComputeSharp.Uwp.csproj", "{3BED0026-5939-43D7-A217-7926DA5BEA8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputeSharp.Uwp", "src\ComputeSharp.Uwp\ComputeSharp.Uwp.csproj", "{3BED0026-5939-43D7-A217-7926DA5BEA8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputeSharp.SwapChain.Uwp", "samples\ComputeSharp.SwapChain.Uwp\ComputeSharp.SwapChain.Uwp.csproj", "{FBD388A5-7855-4408-98FF-E689F509DB5A}"
 EndProject
