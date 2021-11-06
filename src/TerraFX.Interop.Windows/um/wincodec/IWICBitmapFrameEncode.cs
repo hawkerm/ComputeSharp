@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("00000105-A8F2-4877-BA0A-FD2B6645FB94")]
     [NativeTypeName("struct IWICBitmapFrameEncode : IUnknown")]
     [NativeInheritance("IUnknown")]
-    public unsafe partial struct IWICBitmapFrameEncode
+    internal unsafe partial struct IWICBitmapFrameEncode
     {
         public void** lpVtbl;
 

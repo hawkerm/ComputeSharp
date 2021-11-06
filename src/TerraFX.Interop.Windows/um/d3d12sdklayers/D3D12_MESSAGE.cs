@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public unsafe partial struct D3D12_MESSAGE
+    internal unsafe partial struct D3D12_MESSAGE
     {
         public D3D12_MESSAGE_CATEGORY Category;
 

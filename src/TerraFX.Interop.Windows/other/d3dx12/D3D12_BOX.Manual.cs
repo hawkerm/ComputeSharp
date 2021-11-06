@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_BOX
+    internal partial struct D3D12_BOX
     {
         public D3D12_BOX([NativeTypeName("LONG")] int Left, [NativeTypeName("LONG")] int Right)
         {

@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public unsafe partial struct DXGI_ADAPTER_DESC1
+    internal unsafe partial struct DXGI_ADAPTER_DESC1
     {
         [NativeTypeName("WCHAR [128]")]
         public fixed ushort Description[128];

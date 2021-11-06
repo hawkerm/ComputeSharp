@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("C1B6694F-FF09-44A9-B03C-77900A0A1D17")]
     [NativeTypeName("struct IDXGIFactory6 : IDXGIFactory5")]
     [NativeInheritance("IDXGIFactory5")]
-    public unsafe partial struct IDXGIFactory6
+    internal unsafe partial struct IDXGIFactory6
     {
         public void** lpVtbl;
 

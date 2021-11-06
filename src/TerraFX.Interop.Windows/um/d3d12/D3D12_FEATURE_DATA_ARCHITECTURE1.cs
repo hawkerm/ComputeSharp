@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_FEATURE_DATA_ARCHITECTURE1
+    internal partial struct D3D12_FEATURE_DATA_ARCHITECTURE1
     {
         public uint NodeIndex;
 

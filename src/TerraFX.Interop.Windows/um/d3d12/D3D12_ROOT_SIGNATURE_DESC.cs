@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public unsafe partial struct D3D12_ROOT_SIGNATURE_DESC
+    internal unsafe partial struct D3D12_ROOT_SIGNATURE_DESC
     {
         public uint NumParameters;
 

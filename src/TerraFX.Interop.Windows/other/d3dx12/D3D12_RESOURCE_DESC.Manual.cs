@@ -10,7 +10,7 @@ using static TerraFX.Interop.DXGI_FORMAT;
 
 namespace TerraFX.Interop
 {
-    public unsafe partial struct D3D12_RESOURCE_DESC
+    internal unsafe partial struct D3D12_RESOURCE_DESC
     {
         public D3D12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION dimension, [NativeTypeName("UINT64")] ulong alignment, [NativeTypeName("UINT64")] ulong width, uint height, [NativeTypeName("UINT16")] ushort depthOrArraySize, [NativeTypeName("UINT16")] ushort mipLevels, DXGI_FORMAT format, uint sampleCount, uint sampleQuality, D3D12_TEXTURE_LAYOUT layout, D3D12_RESOURCE_FLAGS flags)
         {

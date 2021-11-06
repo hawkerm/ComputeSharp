@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public enum D3D12_RESOURCE_BINDING_TIER
+    internal enum D3D12_RESOURCE_BINDING_TIER
     {
         D3D12_RESOURCE_BINDING_TIER_1 = 1,
         D3D12_RESOURCE_BINDING_TIER_2 = 2,

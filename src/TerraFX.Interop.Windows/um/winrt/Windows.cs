@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public static unsafe partial class Windows
+    internal static unsafe partial class Windows
     {
         [NativeTypeName("#define GENERIC_READ (0x80000000L)")]
         public const uint GENERIC_READ = (0x80000000);

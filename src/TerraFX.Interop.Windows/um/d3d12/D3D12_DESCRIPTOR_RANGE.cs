@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_DESCRIPTOR_RANGE
+    internal partial struct D3D12_DESCRIPTOR_RANGE
     {
         public D3D12_DESCRIPTOR_RANGE_TYPE RangeType;
 

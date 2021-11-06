@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public enum D3D12_SHADER_VISIBILITY
+    internal enum D3D12_SHADER_VISIBILITY
     {
         D3D12_SHADER_VISIBILITY_ALL = 0,
         D3D12_SHADER_VISIBILITY_VERTEX = 1,

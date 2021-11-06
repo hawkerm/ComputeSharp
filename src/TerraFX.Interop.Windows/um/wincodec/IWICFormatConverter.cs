@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("00000301-A8F2-4877-BA0A-FD2B6645FB94")]
     [NativeTypeName("struct IWICFormatConverter : IWICBitmapSource")]
     [NativeInheritance("IWICBitmapSource")]
-    public unsafe partial struct IWICFormatConverter
+    internal unsafe partial struct IWICFormatConverter
     {
         public void** lpVtbl;
 

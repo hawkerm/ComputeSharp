@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("CEDB484A-D4E9-445A-B991-CA21CA157DC2")]
     [NativeTypeName("struct IDxcOperationResult : IUnknown")]
     [NativeInheritance("IUnknown")]
-    public unsafe partial struct IDxcOperationResult
+    internal unsafe partial struct IDxcOperationResult
     {
         public void** lpVtbl;
 

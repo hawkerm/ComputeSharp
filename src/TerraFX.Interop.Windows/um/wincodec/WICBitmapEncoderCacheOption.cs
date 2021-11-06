@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public enum WICBitmapEncoderCacheOption
+    internal enum WICBitmapEncoderCacheOption
     {
         WICBitmapEncoderCacheInMemory = 0,
         WICBitmapEncoderCacheTempFile = 0x1,

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_ROOT_PARAMETER
+    internal partial struct D3D12_ROOT_PARAMETER
     {
         public D3D12_ROOT_PARAMETER_TYPE ParameterType;
 
@@ -17,7 +17,7 @@ namespace TerraFX.Interop
         public D3D12_SHADER_VISIBILITY ShaderVisibility;
 
         [StructLayout(LayoutKind.Explicit)]
-        public partial struct _Anonymous_e__Union
+        internal partial struct _Anonymous_e__Union
         {
             [FieldOffset(0)]
             public D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable;

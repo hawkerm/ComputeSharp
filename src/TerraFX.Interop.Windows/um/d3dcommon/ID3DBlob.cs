@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("8BA5FB08-5195-40E2-AC58-0D989C3A0102")]
     [NativeTypeName("struct ID3D10Blob : IUnknown")]
     [NativeInheritance("IUnknown")]
-    public unsafe partial struct ID3DBlob
+    internal unsafe partial struct ID3DBlob
     {
         public void** lpVtbl;
 

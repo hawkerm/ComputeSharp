@@ -2,7 +2,7 @@
 
 namespace TerraFX.Interop
 {
-    public unsafe partial struct HANDLE
+    internal unsafe partial struct HANDLE
     {
         public readonly void* Value;
 

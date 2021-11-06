@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
-    public static partial class Windows
+    internal static partial class Windows
     {
         /// <summary>Retrieves the GUID of of a specified type.</summary>
         /// <param name="value">A value of type <typeparamref name="T"/>.</param>

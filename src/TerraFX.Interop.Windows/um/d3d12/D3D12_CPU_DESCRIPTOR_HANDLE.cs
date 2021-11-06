@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_CPU_DESCRIPTOR_HANDLE
+    internal partial struct D3D12_CPU_DESCRIPTOR_HANDLE
     {
         [NativeTypeName("SIZE_T")]
         public nuint ptr;

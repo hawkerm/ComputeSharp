@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
-    public static partial class Windows
+    internal static partial class Windows
     {
         public static ref readonly Guid IID_IUnknown
         {

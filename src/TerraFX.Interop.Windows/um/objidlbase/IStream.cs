@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("0000000C-0000-0000-C000-000000000046")]
     [NativeTypeName("struct IStream : ISequentialStream")]
     [NativeInheritance("ISequentialStream")]
-    public unsafe partial struct IStream
+    internal unsafe partial struct IStream
     {
         public void** lpVtbl;
 

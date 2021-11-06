@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("7B816B45-1996-4476-B132-DE9E247C8AF0")]
     [NativeTypeName("struct IWICImagingFactory2 : IWICImagingFactory")]
     [NativeInheritance("IWICImagingFactory")]
-    public unsafe partial struct IWICImagingFactory2
+    internal unsafe partial struct IWICImagingFactory2
     {
         public void** lpVtbl;
 

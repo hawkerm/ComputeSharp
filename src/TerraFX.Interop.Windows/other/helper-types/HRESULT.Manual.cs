@@ -2,7 +2,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct HRESULT
+    internal partial struct HRESULT
     {
         public bool FAILED => Windows.FAILED(Value);
 

@@ -17,12 +17,17 @@
     <PackageReference Include="TerraFX.Interop.D3D12MemoryAllocator" Version="2.0.0-beta3.1413125470" />
   </ItemGroup>
 
-  <!-- .NET Standard 2.0 uses a local fork -->
+  <!-- Missing APIs on .NET Standard 2.0 -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
-    <ProjectReference Include="..\TerraFX.Interop.Windows\TerraFX.Interop.Windows.csproj" />
   </ItemGroup>
+
+  <!-- .NET Standard 2.0 uses a local fork of TerraFX.Interop.Windows and no D3D12MA -->
+  <Import Condition="'$(TargetFramework)' == 'netstandard2.0'"
+          Project="..\TerraFX.Interop.Windows\TerraFX.Interop.Windows.projitems"
+          Label="Shared" />
 
   <ItemGroup>
     <None Include="Libraries\dxcompiler.dll"

@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct WICRect
+    internal partial struct WICRect
     {
         public int X;
 

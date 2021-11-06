@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("6102DEE4-AF59-4B09-B999-B44D73F09B24")]
     [NativeTypeName("struct ID3D12CommandAllocator : ID3D12Pageable")]
     [NativeInheritance("ID3D12Pageable")]
-    public unsafe partial struct ID3D12CommandAllocator
+    internal unsafe partial struct ID3D12CommandAllocator
     {
         public void** lpVtbl;
 

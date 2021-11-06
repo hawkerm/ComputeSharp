@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public static partial class Windows
+    internal static partial class Windows
     {
         [NativeTypeName("#define UINT_MAX 0xffffffff")]
         public const uint UINT_MAX = 0xffffffff;

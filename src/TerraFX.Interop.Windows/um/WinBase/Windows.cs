@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public static unsafe partial class Windows
+    internal static unsafe partial class Windows
     {
         [NativeTypeName("#define INFINITE 0xFFFFFFFF")]
         public const uint INFINITE = 0xFFFFFFFF;

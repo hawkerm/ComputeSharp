@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_VERSIONED_ROOT_SIGNATURE_DESC
+    internal partial struct D3D12_VERSIONED_ROOT_SIGNATURE_DESC
     {
         public D3D_ROOT_SIGNATURE_VERSION Version;
 
@@ -15,7 +15,7 @@ namespace TerraFX.Interop
         public _Anonymous_e__Union Anonymous;
 
         [StructLayout(LayoutKind.Explicit)]
-        public partial struct _Anonymous_e__Union
+        internal partial struct _Anonymous_e__Union
         {
             [FieldOffset(0)]
             public D3D12_ROOT_SIGNATURE_DESC Desc_1_0;

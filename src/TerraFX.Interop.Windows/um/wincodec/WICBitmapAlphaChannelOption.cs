@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public enum WICBitmapAlphaChannelOption
+    internal enum WICBitmapAlphaChannelOption
     {
         WICBitmapUseAlpha = 0,
         WICBitmapUsePremultipliedAlpha = 0x1,

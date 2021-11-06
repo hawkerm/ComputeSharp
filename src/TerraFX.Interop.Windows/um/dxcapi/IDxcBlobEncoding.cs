@@ -12,7 +12,7 @@ namespace TerraFX.Interop
     [Guid("7241D424-2646-4191-97C0-98E96E42FC68")]
     [NativeTypeName("struct IDxcBlobEncoding : IDxcBlob")]
     [NativeInheritance("IDxcBlob")]
-    public unsafe partial struct IDxcBlobEncoding
+    internal unsafe partial struct IDxcBlobEncoding
     {
         public void** lpVtbl;
 

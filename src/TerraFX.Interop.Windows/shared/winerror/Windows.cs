@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public static partial class Windows
+    internal static partial class Windows
     {
         [NativeTypeName("#define E_OUTOFMEMORY _HRESULT_TYPEDEF_(0x8007000EL)")]
         public const int E_OUTOFMEMORY = unchecked((int)(0x8007000E));

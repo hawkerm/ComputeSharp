@@ -5,7 +5,7 @@
 
 namespace TerraFX.Interop
 {
-    public partial struct D3D12_MIP_REGION
+    internal partial struct D3D12_MIP_REGION
     {
         public uint Width;
 
