@@ -9,13 +9,13 @@
     <Import_RootNamespace>ComputeSharp.Polyfills</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)DictionaryExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Enum.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GC.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MemoryMarshal.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Path.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)QueueExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RuntimeHelpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SkipLocalsInitAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Collections.Generic\DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Enum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\GC.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Runtime.InteropServices\MemoryMarshal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\IO\Path.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Collections.Generic\QueueExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Runtime.CompilerServices\RuntimeHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Runtime.CompilerServices\SkipLocalsInitAttribute.cs" />
   </ItemGroup>
 </Project>
