@@ -19,7 +19,7 @@ class Program
     private static readonly (string ShaderName, Win32Application Application)[] Samples = new (string, Win32Application)[]
     {
         (nameof(HelloWorld), new SwapChainApplication<HelloWorld>(static time => new((float)time.TotalSeconds))),
-        (nameof(FourColorGradient), new SwapChainApplication<FourColorGradient>(static time => new((float)time.TotalSeconds))),
+        (nameof(FourColorGradient), new SwapChainApplication<FourColorGradient>(static time => new((float)time.TotalSeconds, new(0,0,0), new(1, 1, 0), new(0, 1, 1), new(1, 0, 1))),
         (nameof(ColorfulInfinity), new SwapChainApplication<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
         (nameof(FractalTiling), new SwapChainApplication<FractalTiling>(static time => new((float)time.TotalSeconds))),
         (nameof(TwoTiledTruchet), new SwapChainApplication<TwoTiledTruchet>(static time => new((float)time.TotalSeconds))),

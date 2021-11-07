@@ -18,10 +18,15 @@ internal readonly partial struct FourColorGradient : IPixelShader<float4>
     private readonly float time;
 
     // Colors to blend together
-    private static readonly float3 ColorOne = new(0.999f, 0.999f, 0.999f);
-    private static readonly float3 ColorTwo = new(0.999f, 0f, 0f);
-    private static readonly float3 ColorThree = new(0f, 0.999f, 0f);
-    private static readonly float3 ColorFour = new(0f, 0f, 0.999f);
+    public readonly float3 colorOne = new(0.999f, 0.999f, 0.999f);
+    public readonly float3 colorTwo = new(0.999f, 0f, 0f);
+    public readonly float3 colorThree = new(0f, 0.999f, 0f);
+    public readonly float3 colorFour = new(0f, 0f, 0.999f);
+
+    public FourColorGradient(float time)
+    {
+        this.time = time;
+    }
 
     /// <summary>
     /// Standard 2D rotation formula.
