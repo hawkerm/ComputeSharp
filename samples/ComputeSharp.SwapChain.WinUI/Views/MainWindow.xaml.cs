@@ -70,4 +70,11 @@ public sealed partial class MainWindow : Window
     {
         this.shaderPanels.AddOrUpdate((AnimatedComputeShaderPanel)sender, null);
     }
+
+    private void CloseApplicationButton_Click(object sender, RoutedEventArgs e)
+    {
+    	OnShutdown();
+    	
+        Application.Current.Exit();
+    }
 }
