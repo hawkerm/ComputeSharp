@@ -137,6 +137,17 @@
                                                 Fill="White"
                                                 Points="0,0 32,0 32,32" />
                                         </Border>
+
+                                        <TextBlock Text="{x:Bind Name}"
+                                                   Margin="12,10,4,0"
+                                                   FontWeight="Bold"
+                                                   FontSize="18"
+                                                   Foreground="Black"/>
+                                        <TextBlock Text="{x:Bind Name}"
+                                                   Margin="10,8,4,0"
+                                                   FontWeight="Bold"
+                                                   FontSize="18"
+                                                   Foreground="White"/>
                                     </Grid>
                                 </controls:ConstrainedBox>
                             </DataTemplate>
