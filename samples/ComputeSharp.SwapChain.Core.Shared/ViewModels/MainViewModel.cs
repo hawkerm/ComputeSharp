@@ -41,6 +41,9 @@ public sealed partial class MainViewModel : ObservableObject
         this.selectedComputeShader = ComputeShaderOptions[0];
         this.selectedComputeShader.IsSelected = true;
         this.colorOne = Colors.Cyan;
+        this.colorTwo = Colors.Red;
+        this.colorThree = Colors.Green;
+        this.colorFour = Colors.Blue;
     }
 
     /// <summary>
@@ -105,7 +108,7 @@ public sealed partial class MainViewModel : ObservableObject
     public IReadOnlyList<ShaderRunnerViewModel> ComputeShaderOptions { get; } = new ShaderRunnerViewModel[]
     {
         new(typeof(ColorfulInfinity), new ShaderRunner<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
-        new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1)))),
+        new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), ColorTwo.ToFloat3(), ColorThree.ToFloat3(), ColorFour.ToFloat3()))),
         new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
         new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
         new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
@@ -163,12 +166,53 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private Color colorOne;
 
+    [ObservableProperty]
+    private Color colorTwo;
+
+    [ObservableProperty]
+    private Color colorThree;
+
+    [ObservableProperty]
+    private Color colorFour;
+    
+    private Color colorCurrent;
+    private int colorIndex;
+
+    /// <summary>
+    /// Gets or sets whether the dynamic resolution is enabled.
+    /// </summary>
+    public Color ColorCurrent
+    {
+        get => this.colorCurrent;
+        set 
+        {
+            SetProperty(ref this.colorCurrent, value);
+            switch (colorIndex)
+            {
+                case 0: ColorOne = value; break;
+                case 1: ColorTwo = value; break;
+                case 2: ColorThree = value; break;
+                case 3: ColorFour = value; break;
+            }
+        }
+    }
+
     /// <summary>
     /// Displays the Color Picker to edit specific color.
     /// </summary>
     [RelayCommand]
     private void OpenColorPicker(int color)
     {
+        this.colorIndex = color;
+        ColorCurrent = colorIndex switch
+        {
+            0 => ColorOne,
+            1 => ColorTwo,
+            2 => ColorThree,
+            3 => ColorFour,
+            _ => throw new System.NotImplementedException()
+        };
+        
         IsPickingColor = true;
     }
 

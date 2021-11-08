@@ -237,7 +237,7 @@
                                     <x:Int32>1</x:Int32>
                                 </MenuFlyoutItem.CommandParameter>
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="Red" />
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="{x:Bind converters:ColorConverter.ConvertColorToBrush(ViewModel.ColorTwo), Mode=OneWay}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutItem Text="Color 3"
@@ -246,7 +246,7 @@
                                     <x:Int32>2</x:Int32>
                                 </MenuFlyoutItem.CommandParameter>
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="Lime" />
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="{x:Bind converters:ColorConverter.ConvertColorToBrush(ViewModel.ColorThree), Mode=OneWay}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutItem Text="Color 4"
@@ -255,7 +255,7 @@
                                     <x:Int32>3</x:Int32>
                                 </MenuFlyoutItem.CommandParameter>
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="Blue" />
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="{x:Bind converters:ColorConverter.ConvertColorToBrush(ViewModel.ColorFour), Mode=OneWay}" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyoutSubItem>
@@ -299,10 +299,9 @@
                 HorizontalAlignment="Right" VerticalAlignment="Top">
                 <SymbolIcon Symbol="Cancel"/>
             </Button>
-            <controls:ColorPicker Color="{x:Bind ViewModel.ColorOne, Mode=TwoWay}" Margin="8,64,8,8">
-
-            </controls:ColorPicker>
-        </Grid>        
+            <controls:ColorPicker Color="{x:Bind ViewModel.ColorCurrent, Mode=TwoWay}" Margin="8,64,8,8"/>
+        </Grid>
+        
 
         <!--Invisible title bar-->
         <Rectangle
