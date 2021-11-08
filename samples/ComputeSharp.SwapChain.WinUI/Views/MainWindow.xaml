@@ -221,6 +221,45 @@
                 <SymbolIcon Symbol="Setting" />
                 <Button.Flyout>
                     <MenuFlyout>
+                        <MenuFlyoutSubItem Text="Color Inputs">
+                            <MenuFlyoutItem Text="Color 1"
+                                            Command="{x:Bind ViewModel.OpenColorPickerCommand}">
+                                <MenuFlyoutItem.CommandParameter>
+                                    <x:Int32>0</x:Int32>
+                                </MenuFlyoutItem.CommandParameter>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="{x:Bind converters:ColorConverter.ConvertColorToBrush(ViewModel.ColorOne), Mode=OneWay}" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Text="Color 2"
+                                            Command="{x:Bind ViewModel.OpenColorPickerCommand}">
+                                <MenuFlyoutItem.CommandParameter>
+                                    <x:Int32>1</x:Int32>
+                                </MenuFlyoutItem.CommandParameter>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="Red" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Text="Color 3"
+                                            Command="{x:Bind ViewModel.OpenColorPickerCommand}">
+                                <MenuFlyoutItem.CommandParameter>
+                                    <x:Int32>2</x:Int32>
+                                </MenuFlyoutItem.CommandParameter>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="Lime" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Text="Color 4"
+                                            Command="{x:Bind ViewModel.OpenColorPickerCommand}">
+                                <MenuFlyoutItem.CommandParameter>
+                                    <x:Int32>3</x:Int32>
+                                </MenuFlyoutItem.CommandParameter>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="Segoe UI" Glyph="&#x25A0;" Foreground="Blue" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem IsChecked="{x:Bind ViewModel.IsDynamicResolutionEnabled, Mode=TwoWay}" Text="Dynamic resolution" />
                         <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem
@@ -248,7 +287,24 @@
             </Button>
         </StackPanel>
 
-        <!--  Invisible title bar  -->
+        <!--  Color Input Picker 'Dialog'  -->
+        <Grid Visibility="{x:Bind ViewModel.IsPickingColor, Mode=OneWay}" CornerRadius="32" Background="#99999999" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Margin="16,12" FontSize="32" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Pick Color"/>
+            <Button
+                Margin="12"
+                Padding="12"
+                CornerRadius="9999"
+                ToolTipService.ToolTip="Close Color Picker"
+                Command="{x:Bind ViewModel.CloseColorPickerCommand}"
+                HorizontalAlignment="Right" VerticalAlignment="Top">
+                <SymbolIcon Symbol="Cancel"/>
+            </Button>
+            <controls:ColorPicker Color="{x:Bind ViewModel.ColorOne, Mode=TwoWay}" Margin="8,64,8,8">
+
+            </controls:ColorPicker>
+        </Grid>        
+
+        <!--Invisible title bar-->
         <Rectangle
             x:Name="TitleBarRectangle"
             Height="28"

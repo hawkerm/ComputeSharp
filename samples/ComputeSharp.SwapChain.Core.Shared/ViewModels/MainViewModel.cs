@@ -6,6 +6,7 @@ using ComputeSharp.SwapChain.Core.Constants;
 using ComputeSharp.SwapChain.Core.Services;
 using ComputeSharp.SwapChain.Core.Shaders.Runners;
 using ComputeSharp.SwapChain.Shaders;
+using Windows.UI;
 #if WINDOWS_UWP
 using ComputeSharp.Uwp;
 #else
@@ -39,6 +40,7 @@ public sealed partial class MainViewModel : ObservableObject
         this.selectedResolutionScale = 100;
         this.selectedComputeShader = ComputeShaderOptions[0];
         this.selectedComputeShader.IsSelected = true;
+        this.colorOne = Colors.Cyan;
     }
 
     /// <summary>
@@ -103,7 +105,7 @@ public sealed partial class MainViewModel : ObservableObject
     public IReadOnlyList<ShaderRunnerViewModel> ComputeShaderOptions { get; } = new ShaderRunnerViewModel[]
     {
         new(typeof(ColorfulInfinity), new ShaderRunner<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
-        new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(static time => new((float)time.TotalSeconds))),
+        new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1)))),
         new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
         new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
         new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
@@ -153,6 +155,30 @@ public sealed partial class MainViewModel : ObservableObject
                 this.analyticsService.Log(Event.IsRenderingPausedChanged, (nameof(value), value));
             }
         }
+    }
+
+    [ObservableProperty]
+    private bool isPickingColor;
+
+    [ObservableProperty]
+    private Color colorOne;
+
+    /// <summary>
+    /// Displays the Color Picker to edit specific color.
+    /// </summary>
+    [RelayCommand]
+    private void OpenColorPicker(int color)
+    {
+        IsPickingColor = true;
+    }
+
+    /// <summary>
+    /// Closes the Color Picker.
+    /// </summary>
+    [RelayCommand]
+    private void CloseColorPicker()
+    {
+        IsPickingColor = false;
     }
 
     /// <summary>
