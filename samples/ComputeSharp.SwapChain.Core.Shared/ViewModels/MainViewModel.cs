@@ -109,6 +109,7 @@ public sealed partial class MainViewModel : ObservableObject
     {
         new(typeof(ColorfulInfinity), new ShaderRunner<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
         new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), ColorTwo.ToFloat3(), ColorThree.ToFloat3(), ColorFour.ToFloat3()))),
+        new(typeof(ShoalOfFishRunner), new ShoalOfFishRunner(() => new float2((float)MouseX, (float)MouseY))),
         new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
         new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
         new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
@@ -159,6 +160,10 @@ public sealed partial class MainViewModel : ObservableObject
             }
         }
     }
+    
+    public double MouseX { get; set; }
+
+    public double MouseY { get; set; }
 
     [ObservableProperty]
     private bool isPickingColor;

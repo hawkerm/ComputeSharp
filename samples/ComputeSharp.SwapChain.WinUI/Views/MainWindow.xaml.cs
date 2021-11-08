@@ -71,6 +71,15 @@ public sealed partial class MainWindow : Window
         this.shaderPanels.AddOrUpdate((AnimatedComputeShaderPanel)sender, null);
     }
 
+    private void ShaderPanel_PointerMoved(object sender, PointerRoutedEventArgs e)
+    {
+        var point = e.GetCurrentPoint(ShaderPanel);
+
+        // TODO: Check if DPI is a problem here...
+        ViewModel.MouseX = point.Position.X / ShaderPanel.ActualWidth; // Convert to 0-1 range to pass to shader
+        ViewModel.MouseY = point.Position.Y / ShaderPanel.ActualHeight;
+    }
+
     private void CloseApplicationButton_Click(object sender, RoutedEventArgs e)
     {
     	OnShutdown();

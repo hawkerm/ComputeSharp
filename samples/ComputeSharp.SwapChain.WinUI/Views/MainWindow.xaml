@@ -164,6 +164,7 @@
             IsVerticalSyncEnabled="{x:Bind ViewModel.IsVerticalSyncEnabled, Mode=OneWay}"
             IsDynamicResolutionEnabled="{x:Bind ViewModel.IsDynamicResolutionEnabled, Mode=OneWay}"
             IsPaused="{x:Bind ViewModel.IsRenderingPaused, Mode=OneWay}"
+            PointerMoved="ShaderPanel_PointerMoved"
             ResolutionScale="{x:Bind converters:ResolutionScaleConverter.ConvertPercentageToScale(ViewModel.SelectedResolutionScale), Mode=OneWay}"
             ShaderRunner="{x:Bind ViewModel.SelectedComputeShader.ShaderRunner, Mode=OneWay}" />
 
