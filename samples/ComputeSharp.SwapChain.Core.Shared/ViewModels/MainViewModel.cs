@@ -113,6 +113,7 @@ public sealed partial class MainViewModel : ObservableObject
         new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
         new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
         new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
+        new(typeof(DiskDistance), new ShaderRunner<DiskDistance>(time => new(new float2((float)MouseX, (float)MouseY), ColorOne.ToFloat3(), ColorTwo.ToFloat3()))),
         new(typeof(Octagrams),new ShaderRunner<Octagrams>(static time => new((float)time.TotalSeconds))),
         new(typeof(ProteanClouds),new ShaderRunner<ProteanClouds>(static time => new((float)time.TotalSeconds))),
         new(typeof(TwoTiledTruchet),new ShaderRunner<TwoTiledTruchet>(static time => new((float)time.TotalSeconds))),
