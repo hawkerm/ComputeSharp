@@ -14,7 +14,7 @@ namespace ComputeSharp.SwapChain.Shaders;
 /// </summary>
 internal static class ShoalOfFish
 {
-    public const int NUMFISH = 1;
+    public const int NUMFISH = 11;
     public const float MAX_ACC = 3.0f;
     public const float MAX_VEL = 0.5f;
     public const float RESIST = 0.2f;
@@ -43,7 +43,7 @@ internal readonly partial struct ShoalOfFishInitialization : IComputeShader
     /// <returns>Buffer with initial fish positions.</returns>
     public void Execute()
     {
-        var res = resolution / resolution.Y;
+        float2 res = new float2(resolution.X, resolution.Y) / resolution.Y;
         
         buffer[ThreadIds.X] = new float4(0.1f + 0.8f * ShoalOfFishLogic.Hash(ThreadIds.X) * res, 0, 0);
     }
@@ -94,7 +94,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         sumF = 0.8f * (1.0f / Hlsl.Abs(fish.XY) - 1.0f / Hlsl.Abs(res - fish.XY));
 
         // Mouse action        
-        w = fish.XY - mouse.XY / DispatchSize.Y; // Repulsive force from mouse position
+        w = fish.XY - (mouse.XY * DispatchSize.XY) / DispatchSize.Y; // Repulsive force from mouse position
         sumF += Hlsl.Normalize(w) * 0.65f / Hlsl.Dot(w, w);
 
         // Calculate repulsion force with other fishs
@@ -160,8 +160,7 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
 
     public Float4 Execute()
     {
-        float2 fragCoord = new(ThreadIds.X, DispatchSize.Y - ThreadIds.Y);
-        float2 uv = fragCoord / DispatchSize.XY;
+        float2 uv = new float2(ThreadIds.X, DispatchSize.Y) / DispatchSize.XY;
 
         float2 p = new float2(1, 1) / DispatchSize.XY;
         float d, m = 1e6F;
