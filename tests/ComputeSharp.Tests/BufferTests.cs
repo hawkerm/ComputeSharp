@@ -416,4 +416,56 @@ public partial class BufferTests
 
         Assert.Fail();
     }
+
+    [CombinatorialTestMethod]
+    [AllDevices]
+    public void Allocate_ReadWriteBuffer_InShader_Int(Device device)
+    {
+        int[] data = Enumerable.Range(1, 1024).ToArray();
+
+        using ReadWriteBuffer<int> destination = device.Get().AllocateReadWriteBuffer<int>(data.Length);
+
+        device.Get().For(destination.Length, new ReadWriteBufferInitializeIntKernel(destination));
+
+        int[] result = destination.ToArray();
+
+        CollectionAssert.AreEqual(data, result);
+    }
+
+    [AutoConstructor]
+    internal readonly partial struct ReadWriteBufferInitializeIntKernel : IComputeShader
+    {
+        public readonly ReadWriteBuffer<int> destination;
+
+        public void Execute()
+        {
+            destination[ThreadIds.X] = ThreadIds.X + 1;
+        }
+    }
+
+    [CombinatorialTestMethod]
+    [AllDevices]
+    public void Allocate_ReadWriteBuffer_InShader_Float4(Device device)
+    {
+        Float4[] data = Enumerable.Range(1, 1024).Select(static i => new Float4(i, i + 0.5f, i + 1, i + 1.5f)).ToArray();
+
+        using ReadWriteBuffer<Float4> destination = device.Get().AllocateReadWriteBuffer<Float4>(data.Length);
+
+        device.Get().For(destination.Length, new ReadWriteBufferInitializeFloat4Kernel(destination));
+
+        Float4[] result = destination.ToArray();
+
+        CollectionAssert.AreEqual(data, result);
+    }
+
+    [AutoConstructor]
+    internal readonly partial struct ReadWriteBufferInitializeFloat4Kernel : IComputeShader
+    {
+        public readonly ReadWriteBuffer<float4> destination;
+
+        public void Execute()
+        {
+            destination[ThreadIds.X] = 1f + new float4(ThreadIds.X, ThreadIds.X + 0.5f, ThreadIds.X + 1, ThreadIds.X + 1.5f);
+        }
+    }
 }
