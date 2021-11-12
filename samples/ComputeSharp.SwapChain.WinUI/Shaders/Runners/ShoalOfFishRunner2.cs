@@ -110,7 +110,7 @@ public readonly partial struct BufferB : IPixelShader<float4>
     float sdFish(float i, float2 p, float a)
     {
         float ds, c = Hlsl.Cos(a), s = Hlsl.Sin(a);
-        p = Hlsl.Mul(p, Hlsl.Mul(20.0f, new float2x2(c, s, -s, c)));
+        p = Hlsl.Mul(p, Hlsl.Mul(20.0f, new float2x2(c, -s, s, c)));
         p.X *= 0.97f + (0.04f + 0.2f * p.Y) * Hlsl.Cos(i + 9.0f * iTime);
         ds = Hlsl.Min(Hlsl.Length(p - new float2(0.8f, 0)) - 0.45f, Hlsl.Length(p - new float2(-0.14f, 0)) - 0.12f);
         p.Y = Hlsl.Abs(p.Y) + 0.13f;
