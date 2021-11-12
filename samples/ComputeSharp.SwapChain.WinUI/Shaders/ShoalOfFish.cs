@@ -69,7 +69,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
     /// <summary>
     /// Shared Buffer.
     /// </summary>
-    public readonly ReadWriteBuffer<float4> buffer;
+    public readonly ReadWriteBuffer<float4> fishes;
 
     /// <summary>
     /// Generate a hash from a vector.
@@ -78,31 +78,29 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
     /// <returns>Hashed vector</returns>
     internal static float2 Hash(float n) => Hlsl.Frac(Hlsl.Sin(new float2(n, n * 7.0f)) * 43758.5f);
 
-    private float4 Fish(float i) => buffer[(int)i];
-
     public void Execute()
     {
-        float2 w, vel, acc, sumF, R = DispatchSize.XY, res = R / R.Y;
+        float2 w, vel, acc, sumF, res = (float2)DispatchSize.XY / DispatchSize.Y;
         float d, a, v, dt = 0.03f;
         int id = ThreadIds.X;
 
         // = Animation step ===================================
-        float4 fish = Fish(id);
+        float4 fish = fishes[id];
 
         // - Sum Forces -----------------------------  
         // Borders action
         sumF = 0.8f * (1.0f / Hlsl.Abs(fish.XY) - 1.0f / Hlsl.Abs(res - fish.XY));
 
         // Mouse action        
-        w = fish.XY - (mouse.XY * DispatchSize.XY) / DispatchSize.Y; // Repulsive force from mouse position
+        w = fish.XY - mouse.XY / DispatchSize.Y; // Repulsive force from mouse position
         sumF += Hlsl.Normalize(w) * 0.65f / Hlsl.Dot(w, w);
 
         // Calculate repulsion force with other fishs
-        for (float i = 0.0f; i < ShoalOfFish.NUMFISH; i++)
+        for (int i = 0; i < ShoalOfFish.NUMFISH; i++)
         {
             if (i != id)
             {                                            // only other fishs
-                d = Hlsl.Length(w = fish.XY - Fish(i).XY);
+                d = Hlsl.Length(w = fish.XY - fishes[i].XY);
                 sumF -= d > 0.0f ? w * (6.3f + Hlsl.Log(d * d * 0.02f)) / Hlsl.Exp(d * d * 2.4f) / d  // attractive/repulsive force from otehrs
                     : 0.01f * Hash(id);                                   // if same pos : small ramdom force
             }
@@ -120,7 +118,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         vel *= v > ShoalOfFish.MAX_VEL ? ShoalOfFish.MAX_VEL / v : 1.0f; // limit velocity
                                                    
         // - Save position and velocity of fish (xy = position, zw = velocity) 
-        buffer[id] = new float4(fish.XY + vel * dt, vel);
+        fishes[id] = new float4(fish.XY + vel * dt, vel);
     }
 }
 
@@ -138,7 +136,7 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
     /// <summary>
     /// Shared Buffer.
     /// </summary>
-    public readonly ReadWriteBuffer<float4> buffer;
+    public readonly ReadWriteBuffer<float4> fishes;
 
     /// <summary>
     /// Draws the fish shape.
@@ -147,7 +145,7 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
     /// <param name="p">Position to check.</param>
     /// <param name="a">acceleration?</param>
     /// <returns></returns>
-    private float sdFish(float i, float2 p, float a)
+    private float sdFish(int i, float2 p, float a)
     {
         float ds, c = Hlsl.Cos(a), s = Hlsl.Sin(a);
         p = Hlsl.Mul(p, 20.0f * new float2x2(c, s, -s, c)); // Rotate and rescale
@@ -160,16 +158,16 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
 
     public Float4 Execute()
     {
-        float2 uv = new float2(ThreadIds.X, DispatchSize.Y) / DispatchSize.XY;
+        float2 fragCoord = new(ThreadIds.X, DispatchSize.Y - ThreadIds.Y);
 
-        float2 p = new float2(1, 1) / DispatchSize.XY;
+        float2 p = 1f / (float2)DispatchSize.XY;
         float d, m = 1e6F;
         float4 ct = default, fish;
 
-        for (float i = 0.0f; i < ShoalOfFish.NUMFISH; i++)
+        for (int i = 0; i < ShoalOfFish.NUMFISH; i++)
         {
-            fish = buffer[(int)i]; // (xy = position, zw = velocity) 
-            m = Hlsl.Min(m, d = sdFish(i, fish.XY - uv.XY * p.Y, Hlsl.Atan2(fish.W, fish.Z))); // Draw fish according to its direction
+            fish = fishes[i]; // (xy = position, zw = velocity) 
+            m = Hlsl.Min(m, d = sdFish(i, fish.XY - fragCoord.XY * p.Y, Hlsl.Atan2(fish.W, fish.Z))); // Draw fish according to its direction
             // Background color sum based on fish velocity (blue => red) + Halo - simple version: c*smoothstep(.5,0.,d);
             ct += Hlsl.Lerp(
                 new float4(0, 0, 1, 1), 
@@ -179,6 +177,6 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
         }
 
         // Mix fish color (white) and Halo
-        return Hlsl.Lerp(new float4(1, 1, 1, 1), 0.5f * Hlsl.Sqrt(ct / ShoalOfFish.NUMFISH), Hlsl.SmoothStep(0.0f, p.Y * 1.2f, m));
+        return Hlsl.Lerp(1f, 0.5f * Hlsl.Sqrt(ct / ShoalOfFish.NUMFISH), Hlsl.SmoothStep(0.0f, p.Y * 1.2f, m));
     }
 }
