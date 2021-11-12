@@ -92,7 +92,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         sumF = 0.8f * (1.0f / Hlsl.Abs(fish.XY) - 1.0f / Hlsl.Abs(res - fish.XY));
 
         // Mouse action        
-        w = fish.XY - mouse.XY / DispatchSize.Y; // Repulsive force from mouse position
+        w = fish.XY - new float2(mouse.X, 1 - mouse.Y) / DispatchSize.Y; // Repulsive force from mouse position
         sumF += Hlsl.Normalize(w) * 0.65f / Hlsl.Dot(w, w);
 
         // Calculate repulsion force with other fishs
@@ -113,7 +113,8 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         // Calculate acceleration A = (1/m * sumF) [cool m=1. here!]
         a = Hlsl.Length(acc = sumF);
         acc *= a > ShoalOfFish.MAX_ACC ? ShoalOfFish.MAX_ACC / a : 1.0f; // limit acceleration
-                                                // Calculate speed
+                                                
+        // Calculate speed
         v = Hlsl.Length(vel = fish.ZW + acc * dt);
         vel *= v > ShoalOfFish.MAX_VEL ? ShoalOfFish.MAX_VEL / v : 1.0f; // limit velocity
                                                    
