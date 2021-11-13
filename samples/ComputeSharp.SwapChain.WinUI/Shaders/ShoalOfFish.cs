@@ -57,14 +57,14 @@ internal readonly partial struct ShoalOfFishInitialization : IComputeShader
 internal readonly partial struct ShoalOfFishLogic : IComputeShader
 {
     /// <summary>
-    /// The current time since the start of the application.
-    /// </summary>
-    public readonly float time;
-
-    /// <summary>
-    /// Mouse coordinates, range 0-1 for X, Y.
+    /// Mouse coordinates, range 0-1 for X, Y. 3rd coordinate is left-mouse button 1 = active.
     /// </summary>
     public readonly float2 mouse;
+
+    /// <summary>
+    /// Resolution of the texture to initialize positions of fish from.
+    /// </summary>
+    public readonly int2 resolution;
 
     /// <summary>
     /// Shared Buffer.
@@ -80,7 +80,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
 
     public void Execute()
     {
-        float2 w, vel, acc, sumF, res = (float2)DispatchSize.XY / DispatchSize.Y;
+        float2 w, vel, acc, sumF, R = resolution, res = R / R.Y;
         float d, a, v, dt = 0.03f;
         int id = ThreadIds.X;
 
@@ -92,7 +92,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         sumF = 0.8f * (1.0f / Hlsl.Abs(fish.XY) - 1.0f / Hlsl.Abs(res - fish.XY));
 
         // Mouse action        
-        w = fish.XY - new float2(mouse.X, 1 - mouse.Y) / DispatchSize.Y; // Repulsive force from mouse position
+        w = fish.XY - new float2(mouse.X, 1 - mouse.Y) * resolution / resolution.Y; // Repulsive force from mouse position
         sumF += Hlsl.Normalize(w) * 0.65f / Hlsl.Dot(w, w);
 
         // Calculate repulsion force with other fishs

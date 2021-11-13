@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using ComputeSharp.SwapChain.Shaders;
 using ComputeSharp.WinUI;
-using Windows.ApplicationModel;
 
 namespace ComputeSharp.SwapChain.WinUI.Shaders.Runners;
 
@@ -30,7 +28,7 @@ public sealed class ShoalOfFishRunner : IShaderRunner
             Gpu.Default.For(ShoalOfFish.NUMFISH, new ShoalOfFishInitialization(new int2(texture.Width, texture.Height), sharedBuffer));
         }
         
-        Gpu.Default.For(ShoalOfFish.NUMFISH, new ShoalOfFishLogic((float)timespan.TotalSeconds, mouseCoordinates(), sharedBuffer));
+        Gpu.Default.For(ShoalOfFish.NUMFISH, new ShoalOfFishLogic(mouseCoordinates(), new int2(texture.Width, texture.Height), sharedBuffer));
         Gpu.Default.ForEach(texture, new ShoalOfFishImage((float)timespan.TotalSeconds, sharedBuffer));
     }
 }
