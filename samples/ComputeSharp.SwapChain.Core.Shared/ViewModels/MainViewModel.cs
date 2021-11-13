@@ -109,7 +109,7 @@ public sealed partial class MainViewModel : ObservableObject
     {
         new(typeof(ColorfulInfinity), new ShaderRunner<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
         new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), ColorTwo.ToFloat3(), ColorThree.ToFloat3(), ColorFour.ToFloat3()))),
-        new(typeof(ShoalOfFishRunner2), new ShoalOfFishRunner2(() => new float3((float)MouseX, (float)MouseY, Convert.ToSingle(LeftMouseButtonDown)))),
+        new(typeof(ShoalOfFishRunner), new ShoalOfFishRunner(() => new float3((float)MouseX, (float)MouseY, Convert.ToSingle(LeftMouseButtonDown)))),
         new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
         new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
         new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
