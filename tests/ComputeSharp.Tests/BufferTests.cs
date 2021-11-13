@@ -129,6 +129,61 @@ public partial class BufferTests
     [Resource(typeof(ConstantBuffer<>))]
     [Resource(typeof(ReadOnlyBuffer<>))]
     [Resource(typeof(ReadWriteBuffer<>))]
+    [Data(AllocationMode.Default)]
+    [Data(AllocationMode.Clear)]
+    public void ReallocateAfterDispose(Device device, Type bufferType, AllocationMode allocationMode)
+    {
+        Buffer<float> buffer = device.Get().AllocateBuffer<float>(bufferType, 128);
+
+        buffer.Dispose();
+
+        buffer = device.Get().AllocateBuffer<float>(bufferType, 128);
+
+        Assert.IsNotNull(buffer);
+        Assert.AreEqual(buffer.Length, 128);
+        Assert.AreSame(buffer.GraphicsDevice, device.Get());
+
+        if (allocationMode == AllocationMode.Clear)
+        {
+            foreach (float x in buffer.ToArray())
+            {
+                Assert.AreEqual(x, 0f);
+            }
+        }
+    }
+
+    [CombinatorialTestMethod]
+    [AllDevices]
+    [Resource(typeof(ConstantBuffer<>))]
+    [Resource(typeof(ReadOnlyBuffer<>))]
+    [Resource(typeof(ReadWriteBuffer<>))]
+    public void DisposeAfterDevice(Device device, Type bufferType)
+    {
+        GraphicsDevice? gpu = device switch
+        {
+            Device.Discrete => Gpu.QueryDevices(info => info.IsHardwareAccelerated).FirstOrDefault(),
+            Device.Warp => Gpu.QueryDevices(info => !info.IsHardwareAccelerated).First(),
+            _ => throw new ArgumentException(nameof(device))
+        };
+
+        if (gpu is null)
+        {
+            Assert.Inconclusive();
+
+            return;
+        }
+
+        Buffer<float> buffer = gpu.AllocateBuffer<float>(bufferType, 128);
+
+        gpu.Dispose();
+        buffer.Dispose();
+    }
+
+    [CombinatorialTestMethod]
+    [AllDevices]
+    [Resource(typeof(ConstantBuffer<>))]
+    [Resource(typeof(ReadOnlyBuffer<>))]
+    [Resource(typeof(ReadWriteBuffer<>))]
     [Data(0, 4096)]
     [Data(128, 512)]
     [Data(2048, 2048)]
