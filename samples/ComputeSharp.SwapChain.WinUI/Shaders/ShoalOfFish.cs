@@ -21,7 +21,7 @@ internal static class ShoalOfFish
 }
 
 /// <summary>
-/// Simple compute used to initialize the shared buffer.
+/// Simple compute shader used to initialize the shared buffer.
 /// </summary>
 [AutoConstructor]
 internal readonly partial struct ShoalOfFishInitialization : IComputeShader
@@ -62,12 +62,13 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
     public readonly float2 mouse;
 
     /// <summary>
-    /// Resolution of the texture to initialize positions of fish from.
+    /// Resolution of the texture to calculate positions of fish from.
+    /// We pass this in from our runner as the DispatchSize is not our final texture resolution.
     /// </summary>
     public readonly int2 resolution;
 
     /// <summary>
-    /// Shared Buffer.
+    /// Shared Buffer storing fish positions and velocities.
     /// </summary>
     public readonly ReadWriteBuffer<float4> fishes;
 
@@ -83,8 +84,6 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         float2 w, vel, acc, sumF, R = resolution, res = R / R.Y;
         float d, a, v, dt = 0.03f;
         int id = ThreadIds.X;
-
-        // = Animation step ===================================
         float4 fish = fishes[id];
 
         // - Sum Forces -----------------------------  
@@ -142,9 +141,9 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
     /// <summary>
     /// Draws the fish shape.
     /// </summary>
-    /// <param name="i">Fish to retrieve.</param>
-    /// <param name="p">Position to check.</param>
-    /// <param name="a">acceleration?</param>
+    /// <param name="i">Fish index.</param>
+    /// <param name="p">Position to draw.</param>
+    /// <param name="a">Angle of the fish.</param>
     /// <returns></returns>
     private float sdFish(int i, float2 p, float a)
     {
@@ -168,7 +167,7 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
         for (int i = 0; i < ShoalOfFish.NUMFISH; i++)
         {
             fish = fishes[i]; // (xy = position, zw = velocity) 
-            m = Hlsl.Min(m, d = sdFish(i, fish.XY - fragCoord.XY * p.Y, Hlsl.Atan2(fish.W, fish.Z))); // Draw fish according to its direction
+            m = Hlsl.Min(m, d = sdFish(i, fish.XY - fragCoord.XY * p.Y, Hlsl.Atan2(fish.W, fish.Z))); // Draw fish and angle it according to its direction
             // Background color sum based on fish velocity (blue => red) + Halo - simple version: c*smoothstep(.5,0.,d);
             ct += Hlsl.Lerp(
                 new float4(0, 0, 1, 1),
