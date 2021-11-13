@@ -14,7 +14,7 @@ namespace ComputeSharp.SwapChain.Shaders;
 /// </summary>
 internal static class ShoalOfFish
 {
-    public const int NUMFISH = 11;
+    public const int NUMFISH = 40;
     public const float MAX_ACC = 3.0f;
     public const float MAX_VEL = 0.5f;
     public const float RESIST = 0.2f;
@@ -98,11 +98,11 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         // Calculate repulsion force with other fishs
         for (int i = 0; i < ShoalOfFish.NUMFISH; i++)
         {
-            if (i != id)
-            {                                            // only other fishs
+            if (i != id) // only other fishs
+            {
                 d = Hlsl.Length(w = fish.XY - fishes[i].XY);
-                sumF -= d > 0.0f ? w * (6.3f + Hlsl.Log(d * d * 0.02f)) / Hlsl.Exp(d * d * 2.4f) / d  // attractive/repulsive force from otehrs
-                    : 0.01f * Hash(id);                                   // if same pos : small ramdom force
+                sumF -= d > 0.0f ? w * (6.3f + Hlsl.Log(d * d * 0.02f)) / Hlsl.Exp(d * d * 2.4f) / d // attractive/repulsive force from otehrs
+                    : 0.01f * Hash(id); // if same pos : small ramdom force
             }
         }
 
@@ -113,7 +113,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         // Calculate acceleration A = (1/m * sumF) [cool m=1. here!]
         a = Hlsl.Length(acc = sumF);
         acc *= a > ShoalOfFish.MAX_ACC ? ShoalOfFish.MAX_ACC / a : 1.0f; // limit acceleration
-                                                
+
         // Calculate speed
         v = Hlsl.Length(vel = fish.ZW + acc * dt);
         vel *= v > ShoalOfFish.MAX_VEL ? ShoalOfFish.MAX_VEL / v : 1.0f; // limit velocity
@@ -149,12 +149,12 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
     private float sdFish(int i, float2 p, float a)
     {
         float ds, c = Hlsl.Cos(a), s = Hlsl.Sin(a);
-        p = Hlsl.Mul(p, 20.0f * new float2x2(c, s, -s, c)); // Rotate and rescale
-        p.X = Hlsl.Mul(p.X, 0.97f + (0.04f + 0.2f * p.Y) * Hlsl.Cos(i + 9.0f * time));  // Swiming ondulation (+rotate in Z axes)
-        ds = Hlsl.Min(Hlsl.Length(p - new float2(0.8f, 0f)) - 0.45f, Hlsl.Length(p - new float2(-0.14f, 0f)) - 0.12f);   // Distance to fish
+        p = Hlsl.Mul(p, Hlsl.Mul(20.0f, new float2x2(c, -s, s, c))); // Rotate and rescale
+        p.X *= 0.97f + (0.04f + 0.2f * p.Y) * Hlsl.Cos(i + 9.0f * time); // Swiming ondulation (+rotate in Z axes)
+        ds = Hlsl.Min(Hlsl.Length(p - new float2(0.8f, 0)) - 0.45f, Hlsl.Length(p - new float2(-0.14f, 0)) - 0.12f); // Distance to fish
         p.Y = Hlsl.Abs(p.Y) + 0.13f;
 
-        return Hlsl.Max(Hlsl.Min(Hlsl.Length(p), Hlsl.Length(p - new float2(0.56f, 0f))) - 0.3f, -ds) * 0.05f;
+        return Hlsl.Max(Hlsl.Min(Hlsl.Length(p), Hlsl.Length(p - new float2(0.56f, 0))) - 0.3f, -ds) * 0.05f;
     }
 
     public Float4 Execute()
@@ -162,8 +162,8 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
         float2 fragCoord = new(ThreadIds.X, DispatchSize.Y - ThreadIds.Y);
 
         float2 p = 1f / (float2)DispatchSize.XY;
-        float d, m = 1e6F;
-        float4 ct = default, fish;
+        float d, m = 1e6f;
+        float4 ct = 0, fish;
 
         for (int i = 0; i < ShoalOfFish.NUMFISH; i++)
         {
@@ -171,9 +171,9 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
             m = Hlsl.Min(m, d = sdFish(i, fish.XY - fragCoord.XY * p.Y, Hlsl.Atan2(fish.W, fish.Z))); // Draw fish according to its direction
             // Background color sum based on fish velocity (blue => red) + Halo - simple version: c*smoothstep(.5,0.,d);
             ct += Hlsl.Lerp(
-                new float4(0, 0, 1, 1), 
-                new float4(1, 0, 0, 1), 
-                Hlsl.Length(fish.ZW) / ShoalOfFish.MAX_VEL) * (2.0f / (1.0f + 3e3F * d * d * d) + 0.5f / (1.0f + 30.0f * d * d)
+                new float4(0, 0, 1, 1),
+                new float4(1, 0, 0, 1),
+                Hlsl.Length(fish.ZW) / ShoalOfFish.MAX_VEL) * (2.0f / (1.0f + 3e3f * d * d * d) + 0.5f / (1.0f + 30.0f * d * d)
             );
         }
 
