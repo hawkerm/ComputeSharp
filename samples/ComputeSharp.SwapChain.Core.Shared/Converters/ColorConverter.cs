@@ -1,4 +1,4 @@
-﻿#if WINDOWS_UWP
+#if WINDOWS_UWP
 using Windows.UI.Xaml.Media;
 #else
 using Microsoft.UI.Xaml.Media;

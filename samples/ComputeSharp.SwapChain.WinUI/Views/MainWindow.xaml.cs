@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using ComputeSharp.SwapChain.Core.Services;
 using ComputeSharp.SwapChain.Core.ViewModels;
 using ComputeSharp.WinUI;
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 
@@ -20,8 +21,8 @@ public sealed partial class MainWindow : Window
 
     public MainWindow()
     {
-        this.InitializeComponent();
-        this.ExtendsContentIntoTitleBar = true;
+        InitializeComponent();
+        ExtendsContentIntoTitleBar = true;
 
         SetTitleBar(this.TitleBarRectangle);
 
@@ -73,17 +74,17 @@ public sealed partial class MainWindow : Window
 
     private void ShaderPanel_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
-        var point = e.GetCurrentPoint(ShaderPanel);
+        PointerPoint point = e.GetCurrentPoint(this.ShaderPanel);
 
         // TODO: Check if DPI is a problem here...
-        ViewModel.MouseX = point.Position.X / ShaderPanel.ActualWidth; // Convert to 0-1 range to pass to shader
-        ViewModel.MouseY = point.Position.Y / ShaderPanel.ActualHeight;
+        ViewModel.MouseX = point.Position.X / this.ShaderPanel.ActualWidth; // Convert to 0-1 range to pass to shader
+        ViewModel.MouseY = point.Position.Y / this.ShaderPanel.ActualHeight;
     }
 
     private void CloseApplicationButton_Click(object sender, RoutedEventArgs e)
     {
-    	OnShutdown();
-    	
+        OnShutdown();
+
         Application.Current.Exit();
     }
 }

@@ -1,16 +1,20 @@
+using System;
 using System.Collections.Generic;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ComputeSharp.SwapChain.Core.Constants;
+using ComputeSharp.SwapChain.Core.Converters;
 using ComputeSharp.SwapChain.Core.Services;
 using ComputeSharp.SwapChain.Core.Shaders.Runners;
 using ComputeSharp.SwapChain.Shaders;
-using Windows.UI;
 #if WINDOWS_UWP
 using ComputeSharp.Uwp;
+using Windows.UI;
 #else
 using ComputeSharp.WinUI;
+using Microsoft.UI;
+using Windows.UI;
 #endif
 
 #nullable enable
@@ -33,6 +37,24 @@ public sealed partial class MainViewModel : ObservableObject
     public MainViewModel(IAnalyticsService analyticsService)
     {
         Guard.IsNotNull(analyticsService);
+
+        ComputeShaderOptions = new ShaderRunnerViewModel[]
+        {
+            new(typeof(ColorfulInfinity), new ShaderRunner<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
+            new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), ColorTwo.ToFloat3(), ColorThree.ToFloat3(), ColorFour.ToFloat3()))),
+            new(typeof(ShoalOfFishRunner), new ShoalOfFishRunner(() => new float3((float)MouseX, (float)MouseY, Convert.ToSingle(LeftMouseButtonDown)))),
+            new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
+            new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
+            new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
+            new(typeof(DiskDistance), new ShaderRunner<DiskDistance>(time => new(new float2((float)MouseX, (float)MouseY), ColorOne.ToFloat3(), ColorTwo.ToFloat3()))),
+            new(typeof(Octagrams),new ShaderRunner<Octagrams>(static time => new((float)time.TotalSeconds))),
+            new(typeof(ProteanClouds),new ShaderRunner<ProteanClouds>(static time => new((float)time.TotalSeconds))),
+            new(typeof(TwoTiledTruchet),new ShaderRunner<TwoTiledTruchet>(static time => new((float)time.TotalSeconds))),
+            new(typeof(PyramidPattern),new ShaderRunner<PyramidPattern>(static time => new((float)time.TotalSeconds))),
+            new(typeof(TriangleGridContouring),new ShaderRunner<TriangleGridContouring>(static time => new((float)time.TotalSeconds))),
+            new(typeof(ContouredLayers),new ContouredLayersRunner()),
+            new(typeof(TerracedHills),new ShaderRunner<TerracedHills>(static time => new((float)time.TotalSeconds))),
+        };
 
         this.analyticsService = analyticsService;
         this.isVerticalSyncEnabled = true;
@@ -105,23 +127,7 @@ public sealed partial class MainViewModel : ObservableObject
     /// <summary>
     /// Gets the collection of available compute shader.
     /// </summary>
-    public IReadOnlyList<ShaderRunnerViewModel> ComputeShaderOptions { get; } = new ShaderRunnerViewModel[]
-    {
-        new(typeof(ColorfulInfinity), new ShaderRunner<ColorfulInfinity>(static time => new((float)time.TotalSeconds))),
-        new(typeof(FourColorGradient), new ShaderRunner<FourColorGradient>(time => new((float)time.TotalSeconds, ColorOne.ToFloat3(), ColorTwo.ToFloat3(), ColorThree.ToFloat3(), ColorFour.ToFloat3()))),
-        new(typeof(ShoalOfFishRunner), new ShoalOfFishRunner(() => new float3((float)MouseX, (float)MouseY, Convert.ToSingle(LeftMouseButtonDown)))),
-        new(typeof(ExtrudedTruchetPattern),new ShaderRunner<ExtrudedTruchetPattern>(static time => new((float)time.TotalSeconds))),
-        new(typeof(FractalTiling),new ShaderRunner<FractalTiling>(static time => new((float)time.TotalSeconds))),
-        new(typeof(MengerJourney),new ShaderRunner<MengerJourney>(static time => new((float)time.TotalSeconds))),
-        new(typeof(DiskDistance), new ShaderRunner<DiskDistance>(time => new(new float2((float)MouseX, (float)MouseY), ColorOne.ToFloat3(), ColorTwo.ToFloat3()))),
-        new(typeof(Octagrams),new ShaderRunner<Octagrams>(static time => new((float)time.TotalSeconds))),
-        new(typeof(ProteanClouds),new ShaderRunner<ProteanClouds>(static time => new((float)time.TotalSeconds))),
-        new(typeof(TwoTiledTruchet),new ShaderRunner<TwoTiledTruchet>(static time => new((float)time.TotalSeconds))),
-        new(typeof(PyramidPattern),new ShaderRunner<PyramidPattern>(static time => new((float)time.TotalSeconds))),
-        new(typeof(TriangleGridContouring),new ShaderRunner<TriangleGridContouring>(static time => new((float)time.TotalSeconds))),
-        new(typeof(ContouredLayers),new ContouredLayersRunner()),
-        new(typeof(TerracedHills),new ShaderRunner<TerracedHills>(static time => new((float)time.TotalSeconds))),
-    };
+    public IReadOnlyList<ShaderRunnerViewModel> ComputeShaderOptions { get; }
 
     private ShaderRunnerViewModel selectedComputeShader;
 
@@ -161,7 +167,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
         }
     }
-    
+
     public double MouseX { get; set; }
 
     public double MouseY { get; set; }
@@ -182,7 +188,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private Color colorFour;
-    
+
     private Color colorCurrent;
     private int colorIndex;
 
@@ -192,10 +198,10 @@ public sealed partial class MainViewModel : ObservableObject
     public Color ColorCurrent
     {
         get => this.colorCurrent;
-        set 
+        set
         {
-            SetProperty(ref this.colorCurrent, value);
-            switch (colorIndex)
+            _ = SetProperty(ref this.colorCurrent, value);
+            switch (this.colorIndex)
             {
                 case 0: ColorOne = value; break;
                 case 1: ColorTwo = value; break;
@@ -212,7 +218,7 @@ public sealed partial class MainViewModel : ObservableObject
     private void OpenColorPicker(int color)
     {
         this.colorIndex = color;
-        ColorCurrent = colorIndex switch
+        ColorCurrent = this.colorIndex switch
         {
             0 => ColorOne,
             1 => ColorTwo,
@@ -220,7 +226,7 @@ public sealed partial class MainViewModel : ObservableObject
             3 => ColorFour,
             _ => throw new System.NotImplementedException()
         };
-        
+
         IsPickingColor = true;
     }
 

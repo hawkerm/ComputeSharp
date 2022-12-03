@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ComputeSharp.SwapChain.Shaders;
 
 /// <summary>
@@ -24,28 +18,29 @@ internal static class ShoalOfFish
 /// Simple compute shader used to initialize the shared buffer.
 /// </summary>
 [AutoConstructor]
+#if SAMPLE_APP
+[EmbeddedBytecode(DispatchAxis.X)]
+#endif
 internal readonly partial struct ShoalOfFishInitialization : IComputeShader
 {
     /// <summary>
     /// Resolution of the texture to initialize positions of fish from.
     /// </summary>
-    public readonly int2 resolution;
+    public readonly int2 Resolution;
 
     /// <summary>
     /// Shared Buffer.
     /// </summary>
-    public readonly ReadWriteBuffer<float4> buffer;
+    public readonly ReadWriteBuffer<float4> Buffer;
 
     /// <summary>
     /// Initializes the initial positions of the fish based on the resolution.
     /// </summary>
-    /// <param name="res">Texture resolution.</param>
-    /// <returns>Buffer with initial fish positions.</returns>
     public void Execute()
     {
-        float2 res = new float2(resolution.X, resolution.Y) / resolution.Y;
-        
-        buffer[ThreadIds.X] = new float4(0.1f + 0.8f * ShoalOfFishLogic.Hash(ThreadIds.X) * res, 0, 0);
+        float2 res = new float2(this.Resolution.X, this.Resolution.Y) / this.Resolution.Y;
+
+        this.Buffer[ThreadIds.X] = new float4(0.1f + (0.8f * ShoalOfFishLogic.Hash(ThreadIds.X) * res), 0, 0);
     }
 }
 
@@ -54,44 +49,50 @@ internal readonly partial struct ShoalOfFishInitialization : IComputeShader
 /// It calculates the math each step to move each fish.
 /// </summary>
 [AutoConstructor]
+#if SAMPLE_APP
+[EmbeddedBytecode(DispatchAxis.X)]
+#endif
 internal readonly partial struct ShoalOfFishLogic : IComputeShader
 {
     /// <summary>
     /// Mouse coordinates, range 0-1 for X, Y. 3rd coordinate is left-mouse button 1 = active.
     /// </summary>
-    public readonly float2 mouse;
+    public readonly float3 Mouse;
 
     /// <summary>
     /// Resolution of the texture to calculate positions of fish from.
     /// We pass this in from our runner as the DispatchSize is not our final texture resolution.
     /// </summary>
-    public readonly int2 resolution;
+    public readonly int2 Resolution;
 
     /// <summary>
     /// Shared Buffer storing fish positions and velocities.
     /// </summary>
-    public readonly ReadWriteBuffer<float4> fishes;
+    public readonly ReadWriteBuffer<float4> Fishes;
 
     /// <summary>
-    /// Generate a hash from a vector.
+    /// Generate a hashed vector from a value.
     /// </summary>
-    /// <param name="p">Vector to hash</param>
+    /// <param name="n">Value to hash</param>
     /// <returns>Hashed vector</returns>
-    internal static float2 Hash(float n) => Hlsl.Frac(Hlsl.Sin(new float2(n, n * 7.0f)) * 43758.5f);
+    internal static float2 Hash(float n)
+    {
+        return Hlsl.Frac(Hlsl.Sin(new float2(n, n * 7.0f)) * 43758.5f);
+    }
 
     public void Execute()
     {
-        float2 w, vel, acc, sumF, R = resolution, res = R / R.Y;
+        float2 w, vel, acc, sumF, R = this.Resolution, res = R / R.Y;
         float d, a, v, dt = 0.03f;
         int id = ThreadIds.X;
-        float4 fish = fishes[id];
+        float4 fish = this.Fishes[id];
 
         // - Sum Forces -----------------------------  
         // Borders action
-        sumF = 0.8f * (1.0f / Hlsl.Abs(fish.XY) - 1.0f / Hlsl.Abs(res - fish.XY));
+        sumF = 0.8f * ((1.0f / Hlsl.Abs(fish.XY)) - (1.0f / Hlsl.Abs(res - fish.XY)));
 
         // Mouse action        
-        w = fish.XY - new float2(mouse.X, 1 - mouse.Y) * resolution / resolution.Y; // Repulsive force from mouse position
+        w = fish.XY - (new float2(this.Mouse.X, 1 - this.Mouse.Y) * res); // Repulsive force from mouse position
         sumF += Hlsl.Normalize(w) * 0.65f / Hlsl.Dot(w, w);
 
         // Calculate repulsion force with other fishs
@@ -99,7 +100,7 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         {
             if (i != id) // only other fishs
             {
-                d = Hlsl.Length(w = fish.XY - fishes[i].XY);
+                d = Hlsl.Length(w = fish.XY - this.Fishes[i].XY);
                 sumF -= d > 0.0f ? w * (6.3f + Hlsl.Log(d * d * 0.02f)) / Hlsl.Exp(d * d * 2.4f) / d // attractive/repulsive force from otehrs
                     : 0.01f * Hash(id); // if same pos : small ramdom force
             }
@@ -114,11 +115,11 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
         acc *= a > ShoalOfFish.MAX_ACC ? ShoalOfFish.MAX_ACC / a : 1.0f; // limit acceleration
 
         // Calculate speed
-        v = Hlsl.Length(vel = fish.ZW + acc * dt);
+        v = Hlsl.Length(vel = fish.ZW + (acc * dt));
         vel *= v > ShoalOfFish.MAX_VEL ? ShoalOfFish.MAX_VEL / v : 1.0f; // limit velocity
-                                                   
+
         // - Save position and velocity of fish (xy = position, zw = velocity) 
-        fishes[id] = new float4(fish.XY + vel * dt, vel);
+        this.Fishes[id] = new float4(fish.XY + (vel * dt), vel);
     }
 }
 
@@ -126,17 +127,20 @@ internal readonly partial struct ShoalOfFishLogic : IComputeShader
 /// This shader is responsible for drawing the final scene.
 /// </summary>
 [AutoConstructor]
+#if SAMPLE_APP
+[EmbeddedBytecode(DispatchAxis.XY)]
+#endif
 internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
 {
     /// <summary>
     /// The current time since the start of the application.
     /// </summary>
-    public readonly float time;
+    private readonly float time;
 
     /// <summary>
     /// Shared Buffer.
     /// </summary>
-    public readonly ReadWriteBuffer<float4> fishes;
+    public readonly ReadWriteBuffer<float4> Fishes;
 
     /// <summary>
     /// Draws the fish shape.
@@ -145,11 +149,11 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
     /// <param name="p">Position to draw.</param>
     /// <param name="a">Angle of the fish.</param>
     /// <returns></returns>
-    private float sdFish(int i, float2 p, float a)
+    private float DrawFish(int i, float2 p, float a)
     {
         float ds, c = Hlsl.Cos(a), s = Hlsl.Sin(a);
         p = Hlsl.Mul(p, Hlsl.Mul(20.0f, new float2x2(c, -s, s, c))); // Rotate and rescale
-        p.X *= 0.97f + (0.04f + 0.2f * p.Y) * Hlsl.Cos(i + 9.0f * time); // Swiming ondulation (+rotate in Z axes)
+        p.X *= 0.97f + (0.04f + (0.2f * p.Y * Hlsl.Cos(i + (9.0f * this.time)))); // Swiming ondulation (+rotate in Z axes)
         ds = Hlsl.Min(Hlsl.Length(p - new float2(0.8f, 0)) - 0.45f, Hlsl.Length(p - new float2(-0.14f, 0)) - 0.12f); // Distance to fish
         p.Y = Hlsl.Abs(p.Y) + 0.13f;
 
@@ -166,13 +170,13 @@ internal readonly partial struct ShoalOfFishImage : IPixelShader<float4>
 
         for (int i = 0; i < ShoalOfFish.NUMFISH; i++)
         {
-            fish = fishes[i]; // (xy = position, zw = velocity) 
-            m = Hlsl.Min(m, d = sdFish(i, fish.XY - fragCoord.XY * p.Y, Hlsl.Atan2(fish.W, fish.Z))); // Draw fish and angle it according to its direction
+            fish = this.Fishes[i]; // (xy = position, zw = velocity) 
+            m = Hlsl.Min(m, d = DrawFish(i, fish.XY - (fragCoord.XY * p.Y), Hlsl.Atan2(fish.W, fish.Z))); // Draw fish and angle it according to its direction
             // Background color sum based on fish velocity (blue => red) + Halo - simple version: c*smoothstep(.5,0.,d);
             ct += Hlsl.Lerp(
                 new float4(0, 0, 1, 1),
                 new float4(1, 0, 0, 1),
-                Hlsl.Length(fish.ZW) / ShoalOfFish.MAX_VEL) * (2.0f / (1.0f + 3e3f * d * d * d) + 0.5f / (1.0f + 30.0f * d * d)
+                Hlsl.Length(fish.ZW) / ShoalOfFish.MAX_VEL) * ((2.0f / (1.0f + (3e3f * d * d * d))) + (0.5f / (1.0f + (30.0f * d * d)))
             );
         }
 
